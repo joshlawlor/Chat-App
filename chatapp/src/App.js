@@ -3,11 +3,11 @@ import {Route, Routes} from "react-router-dom";
 
 
 //PAGE IMPORTS:
-import Landing from './pages/Landing';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import Home from './pages/Home';
-import Chat from './pages/Chat';
+import Landing from './components/Landing';
+import Login from './components/Login';
+import Register from './components/Register';
+import Home from './components/Home';
+import Chat from './components/Chat';
 function App() {
   return (
     <Routes>

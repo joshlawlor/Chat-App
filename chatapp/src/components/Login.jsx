@@ -8,7 +8,9 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState(null);
 
-  const loginUser = async (e) => {};
+  const loginUser = async (e) => {
+    e.preventDefault();
+  };
 
   let handleEmailChange = async (e) => {
     setEmail(e.target.value);
