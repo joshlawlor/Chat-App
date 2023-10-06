@@ -15,10 +15,14 @@ const Login = () => {
 
   const registerUser = async (e) => {
     e.preventDefault();
-    if (email.trim() === "" || password.trim() === "" || confirmPassword.trim() === "" ) {
+    if (
+      email.trim() === "" ||
+      password.trim() === "" ||
+      confirmPassword.trim() === ""
+    ) {
       setErrorMessage("Both email and password fields are required!");
       return;
-    }else if (confirmPassword.trim() !== password.trim()){
+    } else if (confirmPassword.trim() !== password.trim()) {
       setErrorMessage("Passwords do not match!");
       return;
     }
@@ -27,14 +31,12 @@ const Login = () => {
     await createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         console.log(userCredential);
-        navigate('/home')
+        navigate("/home");
       })
       .catch((error) => {
         setErrorMessage(error.message);
         console.log(errorMessage);
       });
-
-
   };
 
   let handleEmailChange = async (e) => {
@@ -48,7 +50,7 @@ const Login = () => {
   let handleConfirmPasswordChange = async (e) => {
     setConfirmPassword(e.target.value);
   };
-  
+
   return (
     <RegisterPage>
       <RegisterLogo src={registerIcon} alt="logo" />

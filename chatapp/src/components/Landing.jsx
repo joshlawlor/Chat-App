@@ -6,6 +6,7 @@ import styled from "styled-components";
 import communityIcon from "../assets/images/communityIcon.png";
 import chatGif from "../assets/images/chatGif.gif";
 import starGif from "../assets/images/starGif.gif";
+import googleIcon from "../assets/images/googleIcon.png";
 const Landing = () => {
   const navigate = useNavigate();
   return (
@@ -28,6 +29,14 @@ const Landing = () => {
           </div>
         </RegisterButton>
       </ButtonsWrapper>
+      <GoogleWrapper>
+        <GoogleButton>
+          <GoogleIcon src={googleIcon} alt="googleIcon" />
+          <div>
+            <GoogleTitle>Sign in with Google.</GoogleTitle>
+          </div>
+        </GoogleButton>
+      </GoogleWrapper>
     </LandingPage>
   );
 };
@@ -125,4 +134,46 @@ const H3 = styled.h3`
   size: 14px;
   line-height: 29px;
   color: #e0b3b3;
+`;
+
+const GoogleWrapper = styled.div`
+  margin-top: 50px;
+`;
+
+const GoogleIcon = styled.img`
+max-height: 50px
+`;
+
+const GoogleTitle = styled.h3`
+margin-left: 10px;
+width: 187px
+height: 32.84px;
+top: 9029.81px;
+left: -9893px;
+font-family:'lato';
+weight: 500;
+size: 14px;
+line-height: 29px;
+color: #e0b3b3;
+`
+
+const GoogleButton = styled.button`
+display: flex;
+justify-content: center;
+align-items: center;
+  width: 225px;
+  height: 107.26px;
+  top: 8895.03px;
+  left: -9982px;
+  border-radius: 20px;
+  border: 1px solid #ffeae8;
+  box-shadow: 0px 4px 16px 0px rgba(243, 179, 171, 0.15);
+  padding: 0;
+  background: linear-gradient(0deg, #ffffff, #ffffff),
+    linear-gradient(0deg, #ffeae8, #ffeae8);
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+  &:hover {
+    background: lightgray;
+  }
 `;
