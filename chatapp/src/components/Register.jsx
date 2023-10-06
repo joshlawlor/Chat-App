@@ -165,14 +165,6 @@ const ButtonContainer = styled.div`
   margin-top: 10px;
   margin-bottom: 15px;
 `;
-const ForgotPasswordLink = styled.button`
-  background: none;
-  border: none;
-  text-decoration: underline;
-  color: #334e68;
-  cursor: pointer;
-  cursor: pointer;
-`;
 const BackButton = styled.button`
   margin-top: 25px;
   background: none;
