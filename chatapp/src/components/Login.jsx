@@ -1,5 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
+
+import { auth } from "../firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
+
 import styled from "styled-components";
 import loginIcon from "../assets/images/loginIcon.png";
 const Login = () => {
@@ -10,6 +14,21 @@ const Login = () => {
 
   const loginUser = async (e) => {
     e.preventDefault();
+    if (email.trim() === "" || password.trim() === "") {
+      setErrorMessage("Both email and password fields are required!");
+      return;
+    }
+    setErrorMessage(null);
+
+    await signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        console.log(userCredential);
+        navigate('/home')
+      })
+      .catch((error) => {
+        setErrorMessage(error.message);
+        console.log(errorMessage);
+      });
   };
 
   let handleEmailChange = async (e) => {
