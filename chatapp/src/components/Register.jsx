@@ -1,14 +1,43 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
+
+import { auth } from "../firebase";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+
 import styled from "styled-components";
 import registerIcon from "../assets/images/registerIcon.png";
 const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState(null);
 
-  const registerUser = async (e) => {};
+  const registerUser = async (e) => {
+    e.preventDefault();
+    if (
+      email.trim() === "" ||
+      password.trim() === "" ||
+      confirmPassword.trim() === ""
+    ) {
+      setErrorMessage("Both email and password fields are required!");
+      return;
+    } else if (confirmPassword.trim() !== password.trim()) {
+      setErrorMessage("Passwords do not match!");
+      return;
+    }
+    setErrorMessage(null);
+
+    await createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        console.log(userCredential);
+        navigate("/home");
+      })
+      .catch((error) => {
+        setErrorMessage(error.message);
+        console.log(errorMessage);
+      });
+  };
 
   let handleEmailChange = async (e) => {
     setEmail(e.target.value);
@@ -16,6 +45,10 @@ const Login = () => {
 
   let handlePasswordChange = async (e) => {
     setPassword(e.target.value);
+  };
+
+  let handleConfirmPasswordChange = async (e) => {
+    setConfirmPassword(e.target.value);
   };
 
   return (
@@ -40,7 +73,7 @@ const Login = () => {
             type="password"
             required
             placeholder="Confirm your password"
-            onChange={handlePasswordChange}
+            onChange={handleConfirmPasswordChange}
           />
           <ButtonContainer>
             <RegisterButton type="submit">Register</RegisterButton>
@@ -48,6 +81,8 @@ const Login = () => {
         </RegisterForm>
         {errorMessage && <p className="errorMessage">{errorMessage}</p>}
       </div>
+      <BackButton onClick={() => navigate('/')}>Back</BackButton>
+
     </RegisterPage>
   );
 };
@@ -130,11 +165,14 @@ const ButtonContainer = styled.div`
   margin-top: 10px;
   margin-bottom: 15px;
 `;
-const ForgotPasswordLink = styled.button`
+const BackButton = styled.button`
+  margin-top: 25px;
   background: none;
   border: none;
-  text-decoration: underline;
-  color: #334e68;
+  font-family: Lato;
   cursor: pointer;
   cursor: pointer;
+  font-size: medium;
+  font-weight: heavy;
+  color: #a6a6a6;
 `;

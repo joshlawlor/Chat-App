@@ -1,5 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
+
+import { auth } from "../firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
+
 import styled from "styled-components";
 import loginIcon from "../assets/images/loginIcon.png";
 const Login = () => {
@@ -8,7 +12,24 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState(null);
 
-  const loginUser = async (e) => {};
+  const loginUser = async (e) => {
+    e.preventDefault();
+    if (email.trim() === "" || password.trim() === "") {
+      setErrorMessage("Both email and password fields are required!");
+      return;
+    }
+    setErrorMessage(null);
+
+    await signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        console.log(userCredential);
+        navigate('/home')
+      })
+      .catch((error) => {
+        setErrorMessage(error.message);
+        console.log(errorMessage);
+      });
+  };
 
   let handleEmailChange = async (e) => {
     setEmail(e.target.value);
@@ -45,6 +66,7 @@ const Login = () => {
       <ForgotPasswordLink onClick={() => navigate("/forgot-password")}>
         Forgot Password?
       </ForgotPasswordLink>
+      <BackButton onClick={() => navigate('/')}>Back</BackButton>
     </LoginPage>
   );
 };
@@ -134,4 +156,15 @@ const ForgotPasswordLink = styled.button`
   color: #334e68;
   cursor: pointer;
   cursor: pointer;
+`;
+const BackButton = styled.button`
+  margin-top: 25px;
+  background: none;
+  border: none;
+  font-family: Lato;
+  cursor: pointer;
+  cursor: pointer;
+  font-size: medium;
+  font-weight: heavy;
+  color: #a6a6a6;
 `;
