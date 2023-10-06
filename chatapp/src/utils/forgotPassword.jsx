@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 import styled from "styled-components";
-import forgotPasswordIcon from '../assets/images/forgotPassword.png'
+import forgotPasswordIcon from "../assets/images/forgotPassword.png";
 import { useNavigate } from "react-router";
 const ForgotPassword = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [errorMessage, setErrorMessage] = useState(null);
   const auth = getAuth();
@@ -15,9 +15,9 @@ const ForgotPassword = () => {
         setErrorMessage("Password reset email sent!");
       })
       .catch((error) => {
-        if(error.message === "Firebase: Error (auth/user-not-found)."){
+        if (error.message === "Firebase: Error (auth/user-not-found).") {
           setErrorMessage("No account found with the email provided.");
-        }else{
+        } else {
           setErrorMessage(error.message);
         }
       });
@@ -46,7 +46,7 @@ const ForgotPassword = () => {
         <ButtonStyler>Continue</ButtonStyler>
       </FormStyler>
       {errorMessage && <p className="errorMessage">{errorMessage}</p>}
-      <BackButton onClick={() => navigate('/login')}>Back</BackButton>
+      <BackButton onClick={() => navigate("/login")}>Back</BackButton>
     </ForgotPasswordWrapper>
   );
 };
@@ -61,11 +61,10 @@ const ForgotPasswordWrapper = styled.div`
   align-items: center;
 `;
 
-const ForgotIcon = styled.img`
-`;
+const ForgotIcon = styled.img``;
 
 const Header = styled.h2`
-margin-top: 16px;
+  margin-top: 16px;
 `;
 
 const SubHeader = styled.h1`
@@ -97,7 +96,7 @@ const InputStyler = styled.input`
   border-radius: 10px;
   border: 1px solid rgba(0, 0, 0, 1);
   border-radius: 10px;
-  box-shadow: 0px 4px 4px 0px #BDB5E1;
+  box-shadow: 0px 4px 4px 0px #bdb5e1;
   margin-bottom: 25px;
   font-family: "Exo", sans-serif;
   font-weight: 400;
@@ -125,7 +124,7 @@ const ButtonStyler = styled.button`
   }
 `;
 const BackButton = styled.button`
-margin-top: 25px;
+  margin-top: 25px;
   background: none;
   border: none;
   font-family: Lato;
@@ -133,5 +132,5 @@ margin-top: 25px;
   cursor: pointer;
   font-size: medium;
   font-weight: heavy;
-  color: #A6A6A6;
+  color: #a6a6a6;
 `;
