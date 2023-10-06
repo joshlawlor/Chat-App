@@ -2,6 +2,9 @@ import React from "react";
 import { useNavigate } from "react-router";
 import styled from "styled-components";
 
+//Firebase imports:
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+
 //Image Imports:
 import communityIcon from "../assets/images/communityIcon.png";
 import chatGif from "../assets/images/chatGif.gif";
@@ -9,6 +12,26 @@ import starGif from "../assets/images/starGif.gif";
 import googleIcon from "../assets/images/googleIcon.png";
 const Landing = () => {
   const navigate = useNavigate();
+
+  const googleAuth = async (e) => {
+    const provider = new GoogleAuthProvider();
+    const auth = getAuth();
+
+    await signInWithPopup(auth, provider)
+      .then((response) => {
+        const credential = GoogleAuthProvider.credentialFromResult(response);
+        const token = credential.accessToken;
+        const user = response.user;
+        navigate('/home');
+      })
+      .catch((error) => {
+        const errorMessage = error.message
+        console.log(errorMessage)
+        const credential = GoogleAuthProvider.credentialFromError(error);
+        console.log(credential)
+      });
+  };
+
   return (
     <LandingPage>
       <Logo src={communityIcon} alt="logo" />
@@ -33,7 +56,7 @@ const Landing = () => {
         <GoogleButton>
           <GoogleIcon src={googleIcon} alt="googleIcon" />
           <div>
-            <GoogleTitle>Sign in with Google.</GoogleTitle>
+            <GoogleTitle onClick={googleAuth}>Sign in with Google.</GoogleTitle>
           </div>
         </GoogleButton>
       </GoogleWrapper>
@@ -141,7 +164,7 @@ const GoogleWrapper = styled.div`
 `;
 
 const GoogleIcon = styled.img`
-max-height: 50px
+  max-height: 50px;
 `;
 
 const GoogleTitle = styled.h3`
@@ -155,12 +178,12 @@ weight: 500;
 size: 14px;
 line-height: 29px;
 color: #e0b3b3;
-`
+`;
 
 const GoogleButton = styled.button`
-display: flex;
-justify-content: center;
-align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 225px;
   height: 107.26px;
   top: 8895.03px;
