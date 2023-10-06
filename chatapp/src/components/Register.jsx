@@ -81,6 +81,8 @@ const Login = () => {
         </RegisterForm>
         {errorMessage && <p className="errorMessage">{errorMessage}</p>}
       </div>
+      <BackButton onClick={() => navigate('/')}>Back</BackButton>
+
     </RegisterPage>
   );
 };
@@ -170,4 +172,15 @@ const ForgotPasswordLink = styled.button`
   color: #334e68;
   cursor: pointer;
   cursor: pointer;
+`;
+const BackButton = styled.button`
+  margin-top: 25px;
+  background: none;
+  border: none;
+  font-family: Lato;
+  cursor: pointer;
+  cursor: pointer;
+  font-size: medium;
+  font-weight: heavy;
+  color: #a6a6a6;
 `;

@@ -18,17 +18,14 @@ const Landing = () => {
     const auth = getAuth();
 
     await signInWithPopup(auth, provider)
-      .then((response) => {
-        const credential = GoogleAuthProvider.credentialFromResult(response);
-        const token = credential.accessToken;
-        const user = response.user;
-        navigate('/home');
+      .then(() => {
+        navigate("/home");
       })
       .catch((error) => {
-        const errorMessage = error.message
-        console.log(errorMessage)
+        const errorMessage = error.message;
+        console.log(errorMessage);
         const credential = GoogleAuthProvider.credentialFromError(error);
-        console.log(credential)
+        console.log(credential);
       });
   };
 
@@ -99,26 +96,27 @@ const ButtonsWrapper = styled.div`
   margin-top: 20px;
 `;
 const RegisterButton = styled.button`
-  width: 325px;
-  height: 207.26px;
-  top: 8895.03px;
-  left: -9982px;
-  border-radius: 20px;
-  border: 1px solid #E9ECFF;
-  box-shadow: 0px 4px 16px 0px rgba(92, 116, 231, 0.15);
-  padding:0;
-  margin-right: 10px;
-  background:  linear-gradient(0deg, #ffffff, #ffffff),
+cursor: pointer;
+width: 325px;
+height: 207.26px;
+top: 8895.03px;
+left: -9982px;
+border-radius: 20px;
+border: 1px solid #ffeae8;
+box-shadow: 0px 4px 16px 0px rgba(243, 179, 171, 0.15);
+padding: 0;
+background: linear-gradient(0deg, #ffffff, #ffffff),
   linear-gradient(0deg, #ffeae8, #ffeae8);
-  background-origin: border-box;
-  background-clip: content-box, border-box;
-  &:hover{
-    background: lightgray;
+background-origin: border-box;
+background-clip: content-box, border-box;
+&:hover {
+  background: lightgray;
 `;
 const LoginIcon = styled.img`
   margin: none;
 `;
 const LoginButton = styled.button`
+  cursor: pointer;
   width: 325px;
   height: 207.26px;
   top: 8895.03px;
@@ -190,6 +188,7 @@ const GoogleButton = styled.button`
   left: -9982px;
   border-radius: 20px;
   border: 1px solid #ffeae8;
+  cursor: pointer;
   box-shadow: 0px 4px 16px 0px rgba(243, 179, 171, 0.15);
   padding: 0;
   background: linear-gradient(0deg, #ffffff, #ffffff),

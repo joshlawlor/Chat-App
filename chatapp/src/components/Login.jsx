@@ -66,6 +66,7 @@ const Login = () => {
       <ForgotPasswordLink onClick={() => navigate("/forgot-password")}>
         Forgot Password?
       </ForgotPasswordLink>
+      <BackButton onClick={() => navigate('/')}>Back</BackButton>
     </LoginPage>
   );
 };
@@ -155,4 +156,15 @@ const ForgotPasswordLink = styled.button`
   color: #334e68;
   cursor: pointer;
   cursor: pointer;
+`;
+const BackButton = styled.button`
+  margin-top: 25px;
+  background: none;
+  border: none;
+  font-family: Lato;
+  cursor: pointer;
+  cursor: pointer;
+  font-size: medium;
+  font-weight: heavy;
+  color: #a6a6a6;
 `;
