@@ -72,12 +72,12 @@ const LoginButton = styled.button`
   border: 1px solid #e9ecff;
   padding: 10px, 40px, 10px, 40px;
   gap: 10px;
-  font-family: "Exo", sans-serif;
+  font-family: Lato;
   font-size: 20px;
   font-weight: 500;
   line-height: 27px;
   letter-spacing: 0em;
-  background: rgba(243, 179, 171, 1);
+  background: #e0b3b3;
   &:hover {
     background: lightgray;
   }
@@ -114,7 +114,7 @@ const InputStyler = styled.input`
   border-radius: 10px;
   border: 1px solid rgba(0, 0, 0, 1);
   border-radius: 10px;
-  box-shadow: 0px 4px 4px 0px rgba(243, 179, 171, 1);
+  box-shadow: 0px 4px 4px 0px #e0b3b3;
   margin-bottom: 10px;
   font-family: "Exo", sans-serif;
   font-weight: 400;
