@@ -6,7 +6,8 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import styled from "styled-components";
 import menuIcon from "../assets/images/menuIcon.png";
 
-import Navbar from './Navbar'
+import Navbar from "./Navbar";
+import ResetPassword from "../utils/resetPassword";
 const Home = () => {
   const navigate = useNavigate();
   const auth = getAuth();
@@ -21,7 +22,6 @@ const Home = () => {
     }
   });
 
-
   const openMenu = () => {
     setShowMenu(true);
   };
@@ -35,7 +35,7 @@ const Home = () => {
 
   return (
     <HomeWrapper>
-      <Navbar/>
+      <Navbar />
       <MenuWrapper>
         <MenuButton onClick={openMenu}>
           <Icon src={menuIcon} alt="menu" />
@@ -43,15 +43,15 @@ const Home = () => {
         </MenuButton>
       </MenuWrapper>
       <ContentWrapper></ContentWrapper>
-       {/* BELOW IS THE CHECK WHETHER OR NOT USER CLICKED THE MENU BUTTON ABOVE */}
-       {showMenu && (
+      {/* BELOW IS THE CHECK WHETHER OR NOT USER CLICKED THE MENU BUTTON ABOVE */}
+      {showMenu && (
         //THIS IS THE MENU POP UP ELEMENT, STYLED BELOW
-        <MenuModal>
+        <MenuModal onClick={closeMenu}>
           <MenuModalContent>
             <CloseMenu onClick={closeMenu}>x</CloseMenu>
-            <LogoutButton onClick={logoutHandler}>Logout</LogoutButton>
             {/* HERE I AM IMPORTING THE RESET PASSWORD COMPONENT FOR LESS MESS */}
-            {/* <ResetPassword /> */}
+            <ResetPassword />
+            <LogoutButton onClick={logoutHandler}>Logout</LogoutButton>
           </MenuModalContent>
         </MenuModal>
       )}
@@ -108,23 +108,30 @@ const MenuModal = styled.div`
 `;
 
 const MenuModalContent = styled.div`
+  border: 4px solid #e0b3b3;
+  border-radius: 25px;
   background-color: #fefefe;
   margin: 15% auto;
   padding: 20px;
-  border: 1px solid #888;
-  width: 50%;
+  width: 25%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
 `;
 
-const LogoutButton = styled.button``;
+const LogoutButton = styled.button`
+  margin-top: 20px;
+`;
 
 const CloseMenu = styled.button`
-  color: #5b6cba;
-  float: right;
+  color: #b3e0b3;
   font-weight: bold;
   border: none;
   font-family: Lato;
   font-size: calc(10px + 2vmin);
-  background-color: inherit;
+  background-color: transparent;
   cursor: pointer;
-  align-items: center;
+  position: absolute;
+  top: 10px;
+  right: 10px;
 `;
