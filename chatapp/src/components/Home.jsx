@@ -5,6 +5,8 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 import styled from "styled-components";
 import menuIcon from "../assets/images/menuIcon.png";
+
+import Navbar from './Navbar'
 const Home = () => {
   const navigate = useNavigate();
   const auth = getAuth();
@@ -33,6 +35,7 @@ const Home = () => {
 
   return (
     <HomeWrapper>
+      <Navbar/>
       <MenuWrapper>
         <MenuButton onClick={openMenu}>
           <Icon src={menuIcon} alt="menu" />
@@ -82,7 +85,7 @@ const MenuButton = styled.button`
   font-size: calc(5px + 2vmin);
   background-color: inherit;
   cursor: pointer;
-  color: #0e0d0d;
+  color: #e0b3b3;
   display: flex;
   align-items: center;
 `;
