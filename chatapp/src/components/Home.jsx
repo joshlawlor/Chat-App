@@ -2,12 +2,16 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router";
 
 import { getAuth } from "firebase/auth";
-
+import { auth } from "../firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
 import styled from "styled-components";
 import menuIcon from "../assets/images/menuIcon.png";
 
 import Navbar from "./Navbar";
 import ResetPassword from "../utils/resetPassword";
+
+//CHAT ELEMENT IMPORTS:
+import ChatRooms from "./ChatElements/ChatRooms";
 const Home = () => {
   const navigate = useNavigate();
   const auth = getAuth();
@@ -35,7 +39,8 @@ const Home = () => {
         </MenuButton>
       </MenuWrapper>
       <ContentWrapper>
-
+        <Heading>Your Chat Rooms:</Heading>
+        <ChatRooms />
 
 
         
@@ -65,6 +70,13 @@ const HomeWrapper = styled.div`
 const ContentWrapper = styled.div`
   flex: 1;
   margin-left: 15vw; /* Adjust the left margin to match the Navbar width */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const Heading = styled.h1`
+  color: #e0b3b3;
 `;
 
 const MenuWrapper = styled.div`
