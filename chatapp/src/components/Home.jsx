@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
 
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 
 import styled from "styled-components";
 import menuIcon from "../assets/images/menuIcon.png";
@@ -13,14 +13,6 @@ const Home = () => {
   const auth = getAuth();
   // This is the state tracking whether or not user has clicked to view the menu
   const [showMenu, setShowMenu] = useState(false);
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      console.log("User authenticated", user);
-    } else {
-      navigate("/");
-      console.log("Unauthenticated");
-    }
-  });
 
   const openMenu = () => {
     setShowMenu(true);
@@ -42,7 +34,12 @@ const Home = () => {
           Menu
         </MenuButton>
       </MenuWrapper>
-      <ContentWrapper></ContentWrapper>
+      <ContentWrapper>
+
+
+
+        
+      </ContentWrapper>
       {/* BELOW IS THE CHECK WHETHER OR NOT USER CLICKED THE MENU BUTTON ABOVE */}
       {showMenu && (
         //THIS IS THE MENU POP UP ELEMENT, STYLED BELOW

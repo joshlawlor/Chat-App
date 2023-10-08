@@ -10,12 +10,11 @@ import chatIcon from "../assets/images/chatIcon.png";
 export default function Navbar() {
   const navigate = useNavigate();
   const auth = getAuth();
-  console.log(auth.currentUser);
 
   const [ displayName,setDisplayName] = useState('please set a username');
   onAuthStateChanged(auth, (user) => {
     if (user) {
-      console.log("User authenticated", user);
+      console.log("User authenticated", user.displayName);
       if(user.displayName !== null ){
       setDisplayName(user.displayName);
       }
