@@ -1,6 +1,6 @@
-import React from "react";
+import React , {useState} from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { getAuth } from "firebase/auth";
+import { getAuth , onAuthStateChanged} from "firebase/auth";
 
 //Logo + Icon imports:
 import styled from "styled-components";
@@ -11,6 +11,19 @@ export default function Navbar() {
   const navigate = useNavigate();
   const auth = getAuth();
   console.log(auth.currentUser);
+
+  const [ displayName,setDisplayName] = useState('please set a username');
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      console.log("User authenticated", user);
+      if(user.displayName !== null ){
+      setDisplayName(user.displayName);
+      }
+    } else {
+      navigate("/");
+      console.log("Unauthenticated");
+    }
+  });
   //Checks current location, to check what page user is currently on
   const location = useLocation();
   const isButtonActive = (path) => location.pathname === path;
@@ -19,7 +32,7 @@ export default function Navbar() {
     <NavbarWrapper>
       <NavTitle>
         <NavLogo src={navLogo} />
-        <Heading>Welcome User!</Heading>
+        <Heading>Welcome {displayName}!</Heading>
       </NavTitle>
       <NavButtonsWrapper>
         <Button
