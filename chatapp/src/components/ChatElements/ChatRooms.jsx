@@ -7,7 +7,6 @@ import { db, auth } from "../../firebase";
 import { query, collection, onSnapshot } from "firebase/firestore";
 
 const ChatRooms = () => {
-  const { displayName } = auth.currentUser;
   const [rooms, setRooms] = useState([]);
   useEffect(() => {
     const q = query(collection(db, "chatRooms"));
@@ -20,7 +19,7 @@ const ChatRooms = () => {
       setRooms(chats);
     });
     return () => unsubscribe();
-  }, [displayName]);
+  }, []);
   return (
     <ChatWrapper>
       <ContentWrapper>

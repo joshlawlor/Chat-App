@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
 
-import { auth } from "../firebase";
+import { getAuth, updateProfile } from "firebase/auth";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 
 import styled from "styled-components";
 import registerIcon from "../assets/images/registerIcon.png";
 const Login = () => {
+  const auth = getAuth();
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState(null);
@@ -17,6 +19,7 @@ const Login = () => {
     e.preventDefault();
     if (
       email.trim() === "" ||
+      username.trim() === "" ||
       password.trim() === "" ||
       confirmPassword.trim() === ""
     ) {
@@ -27,10 +30,19 @@ const Login = () => {
       return;
     }
     setErrorMessage(null);
-
-    await createUserWithEmailAndPassword(auth, email, password)
+    const displayName = username;
+    await createUserWithEmailAndPassword(auth, email, password, displayName)
       .then((userCredential) => {
         console.log(userCredential);
+        updateProfile(auth.currentUser, {
+          displayName: username,
+        })
+          .then(() => {
+            console.log("PROFILE UPDATED TO INCLUDE DISPLAYNAME");
+          })
+          .catch((error) => {
+            console.log(error.message);
+          });
         navigate("/home");
       })
       .catch((error) => {
@@ -41,6 +53,10 @@ const Login = () => {
 
   let handleEmailChange = async (e) => {
     setEmail(e.target.value);
+  };
+
+  let handleUserNameChange = async (e) => {
+    setUsername(e.target.value);
   };
 
   let handlePasswordChange = async (e) => {
@@ -64,6 +80,12 @@ const Login = () => {
             onChange={handleEmailChange}
           />
           <InputStyler
+            type="username"
+            placeholder="Enter your preferred username"
+            required
+            onChange={handleUserNameChange}
+          />
+          <InputStyler
             type="password"
             required
             placeholder="Enter your password"
@@ -81,8 +103,7 @@ const Login = () => {
         </RegisterForm>
         {errorMessage && <p className="errorMessage">{errorMessage}</p>}
       </div>
-      <BackButton onClick={() => navigate('/')}>Back</BackButton>
-
+      <BackButton onClick={() => navigate("/")}>Back</BackButton>
     </RegisterPage>
   );
 };

@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
 
-import { getAuth } from "firebase/auth";
-import { auth } from "../firebase";
-import { useAuthState } from "react-firebase-hooks/auth";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 import styled from "styled-components";
 import menuIcon from "../assets/images/menuIcon.png";
 
@@ -17,7 +15,14 @@ const Home = () => {
   const auth = getAuth();
   // This is the state tracking whether or not user has clicked to view the menu
   const [showMenu, setShowMenu] = useState(false);
-
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      console.log("User authenticated", user.displayName);
+    } else {
+      navigate("/");
+      console.log("Unauthenticated");
+    }
+  });
   const openMenu = () => {
     setShowMenu(true);
   };
