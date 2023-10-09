@@ -1,13 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+
+//Element imports:
+import CreateChat from "./ChatElements/CreateChat";
 
 //Logo + Icon imports:
 import styled from "styled-components";
 import navLogo from "../assets/images/navbarLogo.png";
 import homeIcon from "../assets/images/homeIcon.png";
-// import chatIcon from "../assets/images/chatIcon.png";
+import chatIcon from "../assets/images/chatIcon.png";
 export default function Navbar() {
   const navigate = useNavigate();
+  const [showMenu, setShowMenu] = useState(false);
+  const toggleMenu = () => {
+    setShowMenu(true);
+  };
+  const closeMenu = () => {
+    setShowMenu(false);
+  };
 
   //Checks current location, to check what page user is currently on
   const location = useLocation();
@@ -27,9 +37,21 @@ export default function Navbar() {
           <Icon src={homeIcon} alt="home" />
           Home
         </Button>
-       
-      </NavButtonsWrapper>
 
+        <Button className={showMenu ? "active" : ""} onClick={toggleMenu}>
+          <Icon src={chatIcon} alt="menu" />
+          New Chat
+        </Button>
+      </NavButtonsWrapper>
+      {showMenu && (
+        //THIS IS THE MENU POP UP ELEMENT, STYLED BELOW
+        <MenuModal>
+          <MenuModalContent>
+            <CloseMenu onClick={closeMenu}>x</CloseMenu>
+            <CreateChat />
+          </MenuModalContent>
+        </MenuModal>
+      )}
       <NavbarFooter></NavbarFooter>
     </NavbarWrapper>
   );
@@ -100,4 +122,41 @@ const NavbarFooter = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+`;
+
+const MenuModal = styled.div`
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto;
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+`;
+
+const MenuModalContent = styled.div`
+  border: 4px solid #e0b3b3;
+  border-radius: 25px;
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  width: 25%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+`;
+
+const CloseMenu = styled.button`
+  color: #b3e0b3;
+  font-weight: bold;
+  border: none;
+  font-family: Lato;
+  font-size: calc(10px + 2vmin);
+  background-color: transparent;
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  right: 10px;
 `;

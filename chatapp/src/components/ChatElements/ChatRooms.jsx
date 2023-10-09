@@ -64,6 +64,7 @@ const ContentWrapper = styled.div`
   align-items: center;
   max-width: 75vw;
   min-width: 75vw;
+  max-height: 80vh;
   margin-top: 2vh;
 `;
 
