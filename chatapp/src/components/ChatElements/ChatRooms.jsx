@@ -37,7 +37,7 @@ const ChatRooms = () => {
   };
 
   return (
-    <ChatWrapper>
+    <ChatRoomsWrapper>
       <ContentWrapper>
         {rooms &&
           rooms.map((room) => (
@@ -51,24 +51,34 @@ const ChatRooms = () => {
             </Room>
           ))}
       </ContentWrapper>
-    </ChatWrapper>
+    </ChatRoomsWrapper>
   );
 };
 
 export default ChatRooms;
-const ChatWrapper = styled.div``;
+const ChatRoomsWrapper = styled.div``;
 
-const ContentWrapper = styled.div``;
+const ContentWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 75vw;
+  min-width: 75vw;
+  margin-top: 2vh;
+`;
 
-const Room = styled.div`
-  display: inline-block;
-  color: #444;
-  border: 1px solid #ccc;
-  background: #ddd;
-  box-shadow: 0 0 5px -1px rgba(0, 0, 0, 0.2);
+const Room = styled.button`
+  color: #b3e0b3;
+  background-color: inherit;
+  border: 8px solid #b3e0b3;
+  border-radius: 45%;
+  box-shadow: 0 10px 10px -1px #e0b3b3;
   cursor: pointer;
   vertical-align: middle;
-  max-width: 100px;
+  min-width: 150px;
+  min-height: 150px;
+  font-family: Lato;
+  font-size: 15px;
   padding: 5px;
   text-align: center;
 `;

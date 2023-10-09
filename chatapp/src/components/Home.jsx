@@ -45,10 +45,8 @@ const Home = () => {
       </MenuWrapper>
       <ContentWrapper>
         <Heading>Your Chat Rooms:</Heading>
+        {/* IMPORTING CHATROOM ELEMENT HERE */}
         <ChatRooms />
-
-
-        
       </ContentWrapper>
       {/* BELOW IS THE CHECK WHETHER OR NOT USER CLICKED THE MENU BUTTON ABOVE */}
       {showMenu && (

@@ -5,7 +5,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import navLogo from "../assets/images/navbarLogo.png";
 import homeIcon from "../assets/images/homeIcon.png";
-import chatIcon from "../assets/images/chatIcon.png";
+// import chatIcon from "../assets/images/chatIcon.png";
 export default function Navbar() {
   const navigate = useNavigate();
 
@@ -27,13 +27,7 @@ export default function Navbar() {
           <Icon src={homeIcon} alt="home" />
           Home
         </Button>
-        <Button
-          className={isButtonActive("/chat") ? "active" : ""}
-          onClick={() => navigate("/chat")}
-        >
-          <Icon src={chatIcon} alt="chat" />
-          Chat
-        </Button>
+       
       </NavButtonsWrapper>
 
       <NavbarFooter></NavbarFooter>
