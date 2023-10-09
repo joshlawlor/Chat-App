@@ -11,6 +11,10 @@ import {
   onSnapshot,
 } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
+
+
+//Element imports:
+import Message from "./ChatElements/Message";
 const Chat = () => {
   const [messages, setMessages] = useState([]);
   const [chatUser] = useAuthState(auth);
@@ -26,31 +30,36 @@ const Chat = () => {
   const messagesSubcollectionRef = collection(chatRoomRef, "Messages");
   const q = query(messagesSubcollectionRef, orderBy("timestamp"));
   console.log(q);
-  // useEffect(() => {
-  //   console.log("USEFFECT RAN");
-  //   //THIS GRABS THE SPECIFIC ROOM DOC FROM THE CHATS COLLECTION
-  //   const chatRoomRef = doc(collection(db, "chatRooms"), roomID);
-  //   //THIS GRABS THE SPECIFIC MESSAGES SUBCOLLECTION FROM THE ROOM DOC
-  //   const messagesSubcollectionRef = collection(chatRoomRef, "Messages");
 
-  //   const q = query(messagesSubcollectionRef, orderBy("timestamp"));
-  //   console.log(q);
-  //   const unsubscribe = onSnapshot(q, (querySnapshot) => {
-  //     let messages = [];
-  //     querySnapshot.forEach((doc) => {
-  //       messages.push({ ...doc.data(), id: doc.id });
-  //     });
-  //     setMessages(messages);
-  //   });
+  useEffect(() => {
+    console.log("USEFFECT MESSAGES RAN");
+    const chatRoomRef = doc(collection(db, "chatRooms"), roomID);
+    const messagesSubcollectionRef = collection(chatRoomRef, "Messages");
 
-  //   return () => unsubscribe();
-  // }, [roomName, roomOwner, roomID, chatUser]);
+    const q = query(messagesSubcollectionRef, orderBy("timestamp"));
+    console.log(q);
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      let messages = [];
+      querySnapshot.forEach((doc) => {
+        messages.push({ ...doc.data(), id: doc.id });
+      });
+      setMessages(messages);
+    });
+
+    return () => unsubscribe();
+  }, [roomName, roomOwner, roomID, chatUser]);
 
   return (
     <ChatWrapper>
       <Navbar />
       <ContentWrapper>
         <Heading>Chat Room: {roomName}</Heading>
+        <MessagesWrapper>
+          {messages &&
+            messages.map((message) => (
+              <Message key={message.id} message={message} />
+            ))}
+        </MessagesWrapper>
       </ContentWrapper>
     </ChatWrapper>
   );
@@ -67,4 +76,8 @@ const ContentWrapper = styled.div`
   margin-left: 15vw; /* Adjust the left margin to match the Navbar width */
 `;
 
-const Heading = styled.h1``;
+const Heading = styled.h1`
+  font-familty: Lato;
+`;
+
+const MessagesWrapper = styled.div``;
