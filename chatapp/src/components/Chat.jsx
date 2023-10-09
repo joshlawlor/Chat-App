@@ -15,6 +15,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 
 //Element imports:
 import Message from "./ChatElements/Message";
+import SendMessage from "./ChatElements/SendMessage";
 const Chat = () => {
   const [messages, setMessages] = useState([]);
   const [chatUser] = useAuthState(auth);
@@ -60,6 +61,9 @@ const Chat = () => {
               <Message key={message.id} message={message} />
             ))}
         </MessagesWrapper>
+        <SendMessageWrapper>
+              <SendMessage roomID={roomID}/>
+        </SendMessageWrapper>
       </ContentWrapper>
     </ChatWrapper>
   );
@@ -80,4 +84,17 @@ const Heading = styled.h1`
   font-familty: Lato;
 `;
 
-const MessagesWrapper = styled.div``;
+const MessagesWrapper = styled.div`
+min-width: 90%;
+max-height: 50vh
+overflow-y: auto;
+display: flex;
+flex-direction: column;
+text-align: center;
+align-items: flex-end;
+position: relative;
+`;
+const SendMessageWrapper = styled.div`
+  border: 3px solid blue;
+
+`
