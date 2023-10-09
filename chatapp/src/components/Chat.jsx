@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useLayoutEffect } from "react";
 import styled from "styled-components";
 import Navbar from "./Navbar";
 import { useLocation } from "react-router-dom";
@@ -12,7 +12,6 @@ import {
 } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 
-
 //Element imports:
 import Message from "./ChatElements/Message";
 import SendMessage from "./ChatElements/SendMessage";
@@ -24,6 +23,16 @@ const Chat = () => {
   const roomName = location.state.name;
   const roomOwner = location.state.owner;
   const userList = location.state.userList;
+
+  const scroll = useRef();
+
+  useLayoutEffect(() => {
+    if (scroll.current) {
+      scroll.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, []);
+
+  //GET ALL MESSAGES
   useEffect(() => {
     console.log("USEFFECT MESSAGES RAN");
     const chatRoomRef = doc(collection(db, "chatRooms"), roomID);
@@ -52,9 +61,10 @@ const Chat = () => {
             messages.map((message) => (
               <Message key={message.id} message={message} />
             ))}
+          <span ref={scroll}></span>
         </MessagesWrapper>
         <SendMessageWrapper>
-              <SendMessage roomID={roomID}/>
+          <SendMessage scroll={scroll} roomID={roomID} />
         </SendMessageWrapper>
       </ContentWrapper>
     </ChatWrapper>
@@ -71,7 +81,7 @@ const ContentWrapper = styled.div`
   flex: 1;
   margin-left: 15vw; /* Adjust the left margin to match the Navbar width */
   position: absolute;
-  min-width: 85vw
+  min-width: 85vw;
 `;
 
 const Heading = styled.h1`
@@ -79,15 +89,15 @@ const Heading = styled.h1`
 `;
 
 const MessagesWrapper = styled.div`
-overflow-y: auto;
-overflow-x: hidden;
-display: flex;
-flex-direction: column;
-max-height: 82vh;
-max-width: 100%;
-padding: 15px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  max-height: 82vh;
+  min-height: 82vh;
+  max-width: 100%;
+  padding: 15px;
 `;
 const SendMessageWrapper = styled.div`
   border: 3px solid blue;
-
-`
+`;

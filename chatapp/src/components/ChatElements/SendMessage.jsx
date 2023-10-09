@@ -32,7 +32,7 @@ const SendMessage = ({ scroll, roomID }) => {
       timestamp: serverTimestamp(),
     });
     setInput("");
-    // scroll.current.scrollIntoView({ behavior: "smooth" });
+    scroll.current.scrollIntoView({ behavior: "smooth" });
   };
 
   const handleInputChange = (e) => {
