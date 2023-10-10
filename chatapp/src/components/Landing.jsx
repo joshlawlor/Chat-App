@@ -4,7 +4,16 @@ import styled from "styled-components";
 
 //Firebase imports:
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-
+import { db } from "../firebase";
+import {
+  collection,
+  serverTimestamp,
+  doc,
+  setDoc,
+  query,
+  where,
+  getDocs,
+} from "firebase/firestore";
 //Image Imports:
 import communityIcon from "../assets/images/communityIcon.png";
 import chatGif from "../assets/images/chatGif.gif";
@@ -14,21 +23,59 @@ const Landing = () => {
   const navigate = useNavigate();
 
   const googleAuth = async (e) => {
-    const provider = new GoogleAuthProvider();
-    const auth = getAuth();
+    try {
+      const provider = new GoogleAuthProvider();
+      const auth = getAuth();
 
-    await signInWithPopup(auth, provider)
-      .then(() => {
-        navigate("/home");
-      })
-      .catch((error) => {
-        const errorMessage = error.message;
-        console.log(errorMessage);
-        const credential = GoogleAuthProvider.credentialFromError(error);
-        console.log(credential);
-      });
+      const response = await signInWithPopup(auth, provider);
+
+      const username = response.user.displayName;
+      const email = response.user.email;
+      const userCollectionRef = collection(db, "chat-users");
+
+      // Create queries to check for duplicate username and email
+      const duplicateUsernameQuery = query(
+        userCollectionRef,
+        where("username", "==", username)
+      );
+      const duplicateEmailQuery = query(
+        userCollectionRef,
+        where("email", "==", email)
+      );
+
+      const usernameQuerySnapshot = await getDocs(duplicateUsernameQuery);
+      const emailQuerySnapshot = await getDocs(duplicateEmailQuery);
+
+      if (!usernameQuerySnapshot.empty) {
+        // Username already exists
+        console.log("Username already exists.");
+      }
+
+      if (!emailQuerySnapshot.empty) {
+        // Email already exists
+        console.log("Email already exists.");
+      }
+
+      if (usernameQuerySnapshot.empty && emailQuerySnapshot.empty) {
+        // No duplicates found, create the new user document
+        const userDocRef = doc(userCollectionRef);
+        await setDoc(userDocRef, {
+          username: username,
+          email: email,
+          timestamp: serverTimestamp(),
+        });
+        console.log("User document created.");
+      }
+
+      // Redirect to the home page or the appropriate location
+      navigate("/home");
+    } catch (error) {
+      const errorMessage = error.message;
+      console.log(errorMessage);
+      const credential = GoogleAuthProvider.credentialFromError(error);
+      console.log(credential);
+    }
   };
-
   return (
     <LandingPage>
       <Logo src={communityIcon} alt="logo" />

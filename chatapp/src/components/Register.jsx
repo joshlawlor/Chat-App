@@ -3,7 +3,8 @@ import { useNavigate } from "react-router";
 
 import { getAuth, updateProfile } from "firebase/auth";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-
+import { db } from "../firebase";
+import { collection, serverTimestamp, doc, setDoc } from "firebase/firestore";
 import styled from "styled-components";
 import registerIcon from "../assets/images/registerIcon.png";
 const Login = () => {
@@ -43,6 +44,14 @@ const Login = () => {
           .catch((error) => {
             console.log(error.message);
           });
+
+        const userCollectionRef = collection(db, "chat-users");
+        const userDocRef = doc(userCollectionRef);
+        setDoc(userDocRef, {
+          username: username,
+          email: email,
+          timestamp: serverTimestamp(),
+        });
         navigate("/home");
       })
       .catch((error) => {
