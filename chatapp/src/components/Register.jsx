@@ -4,7 +4,15 @@ import { useNavigate } from "react-router";
 import { getAuth, updateProfile } from "firebase/auth";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { db } from "../firebase";
-import { collection, serverTimestamp, doc, setDoc } from "firebase/firestore";
+import {
+  collection,
+  serverTimestamp,
+  doc,
+  setDoc,
+  query,
+  where,
+  getDocs,
+} from "firebase/firestore";
 import styled from "styled-components";
 import registerIcon from "../assets/images/registerIcon.png";
 const Login = () => {
@@ -32,32 +40,64 @@ const Login = () => {
     }
     setErrorMessage(null);
     const displayName = username;
-    await createUserWithEmailAndPassword(auth, email, password, displayName)
-      .then((userCredential) => {
-        console.log(userCredential);
-        updateProfile(auth.currentUser, {
-          displayName: username,
-        })
-          .then(() => {
-            console.log("PROFILE UPDATED TO INCLUDE DISPLAYNAME");
-          })
-          .catch((error) => {
-            console.log(error.message);
-          });
 
-        const userCollectionRef = collection(db, "chat-users");
+    const userCollectionRef = collection(db, "chat-users");
+    // Check for duplicate username
+    const duplicateUsernameQuery = query(
+      userCollectionRef,
+      where("username", "==", username)
+    );
+    const usernameQuerySnapshot = await getDocs(duplicateUsernameQuery);
+
+    if (!usernameQuerySnapshot.empty) {
+      setErrorMessage("Username is already taken.");
+      return;
+    }
+
+    // Check for duplicate email
+    const duplicateEmailQuery = query(
+      userCollectionRef,
+      where("email", "==", email)
+    );
+    const emailQuerySnapshot = await getDocs(duplicateEmailQuery);
+
+    if (!emailQuerySnapshot.empty) {
+      setErrorMessage("Email is already registered.");
+      return;
+    }
+
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password,
+        displayName
+      );
+
+      console.log(userCredential);
+
+      await updateProfile(auth.currentUser, {
+        displayName: username,
+      });
+
+      console.log("PROFILE UPDATED TO INCLUDE DISPLAYNAME");
+
+      if (usernameQuerySnapshot.empty && emailQuerySnapshot.empty) {
+        // No duplicates found, create the new user document
         const userDocRef = doc(userCollectionRef);
-        setDoc(userDocRef, {
+        await setDoc(userDocRef, {
           username: username,
           email: email,
           timestamp: serverTimestamp(),
         });
-        navigate("/home");
-      })
-      .catch((error) => {
-        setErrorMessage(error.message);
-        console.log(errorMessage);
-      });
+        console.log("User document created.");
+      }
+
+      navigate("/home");
+    } catch (error) {
+      setErrorMessage(error.message);
+      console.log(errorMessage);
+    }
   };
 
   let handleEmailChange = async (e) => {
