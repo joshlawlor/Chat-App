@@ -2,12 +2,14 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router";
 
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-
 import styled from "styled-components";
 import menuIcon from "../assets/images/menuIcon.png";
 
 import Navbar from "./Navbar";
 import ResetPassword from "../utils/resetPassword";
+
+//CHAT ELEMENT IMPORTS:
+import ChatRooms from "./ChatElements/ChatRooms";
 const Home = () => {
   const navigate = useNavigate();
   const auth = getAuth();
@@ -15,13 +17,12 @@ const Home = () => {
   const [showMenu, setShowMenu] = useState(false);
   onAuthStateChanged(auth, (user) => {
     if (user) {
-      console.log("User authenticated", user);
+      console.log("User authenticated", user.displayName);
     } else {
       navigate("/");
       console.log("Unauthenticated");
     }
   });
-
   const openMenu = () => {
     setShowMenu(true);
   };
@@ -42,7 +43,11 @@ const Home = () => {
           Menu
         </MenuButton>
       </MenuWrapper>
-      <ContentWrapper></ContentWrapper>
+      <ContentWrapper>
+        <Heading>Your Chat Rooms:</Heading>
+        {/* IMPORTING CHATROOM ELEMENT HERE */}
+        <ChatRooms />
+      </ContentWrapper>
       {/* BELOW IS THE CHECK WHETHER OR NOT USER CLICKED THE MENU BUTTON ABOVE */}
       {showMenu && (
         //THIS IS THE MENU POP UP ELEMENT, STYLED BELOW
@@ -68,6 +73,13 @@ const HomeWrapper = styled.div`
 const ContentWrapper = styled.div`
   flex: 1;
   margin-left: 15vw; /* Adjust the left margin to match the Navbar width */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const Heading = styled.h1`
+  color: #e0b3b3;
 `;
 
 const MenuWrapper = styled.div`
