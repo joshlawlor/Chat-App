@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { auth, db } from "../../firebase";
-
 import styled from "styled-components";
+
+import { auth, db } from "../../firebase";
 import {
   addDoc,
   collection,
@@ -9,27 +9,41 @@ import {
   doc,
   setDoc,
 } from "firebase/firestore";
+
+//ALGOLIA REFERENCES::
+const algoliaAppID = process.env.ALGOLIA_APP_ID;
+const algoliaApiKey = process.env.ALGOLIA_API_KEY;
+const algoliasearch = require("algoliasearch");
+const client = algoliasearch(algoliaAppID, algoliaApiKey);
+const index = client.initIndex("chat-users");
+
 const CreateChat = () => {
   const { uid, displayName } = auth.currentUser;
   const [input, setInput] = useState("");
+
+  //SEARCH STATES:
   const [userList, setUserList] = useState([]);
 
+  //FIRESTORE REFERENCES:
+  const chatCollectionRef = collection(db, "chatRooms");
+  const chatDocRef = doc(chatCollectionRef);
+  const messagesSubcollectionRef = collection(chatDocRef, "Messages");
+
+  //SEARCH USERS FUNCTION:
+
+  //CREATE CHAT FUNCTION:
   const createChat = async (e) => {
     e.preventDefault();
     if (input === "") {
       alert("Please enter a valid chat name");
       return;
     }
-
-    //THIS IS THE ROUTE TO THE CHAT COLLECTION
-    const chatCollectionRef = collection(db, "chatRooms");
-
-    const chatDocRef = doc(chatCollectionRef);
+    //Updates userList to include the owner of the chat
     if (!userList.includes(displayName)) {
       console.log(displayName + " changed");
       userList.push(displayName);
     }
-
+    //Creates a chat room
     await setDoc(chatDocRef, {
       name: input,
       owner: displayName,
@@ -37,15 +51,12 @@ const CreateChat = () => {
       uid,
       timestamp: serverTimestamp(),
     });
-
-    const messagesSubcollectionRef = collection(chatDocRef, "Messages");
-
+    // Adds an initial document to the 'Messages' subcollection for the chatroom
     await addDoc(messagesSubcollectionRef, {
       text: "Chat Created",
       timestamp: serverTimestamp(),
       uid: uid,
     });
-
     setInput("");
     setUserList([""]);
   };
@@ -54,7 +65,7 @@ const CreateChat = () => {
     setInput("");
     setUserList([""]);
     return;
-  }
+  };
 
   return (
     <CreateChatWrapper>
