@@ -136,6 +136,12 @@ const CreateChat = () => {
               </button>
             ))}
           </div>
+          <div>
+            <strong>Current User List:</strong>
+            {userList.map((user, index) => (
+              <p key={index}>{user}</p>
+            ))}
+          </div>
           <button type="button" onClick={() => cancelChatCreation()}>
             Cancel
           </button>
