@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState , useEffect} from "react";
 import { useNavigate } from "react-router";
 
 import { getAuth, onAuthStateChanged } from "firebase/auth";
@@ -11,22 +11,26 @@ import ResetPassword from "../utils/resetPassword";
 //CHAT ELEMENT IMPORTS:
 import ChatRooms from "./ChatElements/ChatRooms";
 const Home = () => {
-  const navigate = useNavigate();
   const auth = getAuth();
+  const navigate = useNavigate();
   // This is the state tracking whether or not user has clicked to view the menu
   const [showMenu, setShowMenu] = useState(false);
   const [authState, setAuthState] = useState(false);
   const [displayName, setDisplayName] = useState("");
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      console.log("User authenticated", user.displayName);
-      setAuthState(true)
-      setDisplayName(user.displayName)
-    } else {
-      navigate("/");
-      console.log("Unauthenticated");
-    }
-  });
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        console.log("User authenticated", user.displayName);
+        setAuthState(true);
+        setDisplayName(user.displayName);
+      } else {
+        navigate("/");
+        console.log("Unauthenticated");
+      }
+    });
+
+    return unsubscribe; // Cleanup the listener when the component unmounts
+  }, [auth, navigate]);
   const openMenu = () => {
     setShowMenu(true);
   };
