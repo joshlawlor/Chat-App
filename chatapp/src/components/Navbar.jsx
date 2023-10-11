@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 
 //Element imports:
 import CreateChat from "./ChatElements/CreateChat";
-
+import SearchUsers from "../utils/searchUsers";
 //Logo + Icon imports:
 import styled from "styled-components";
 import navLogo from "../assets/images/navbarLogo.png";
@@ -49,6 +49,7 @@ export default function Navbar() {
           <MenuModalContent>
             <CloseMenu onClick={closeMenu}>x</CloseMenu>
             <CreateChat />
+            <SearchUsers />
           </MenuModalContent>
         </MenuModal>
       )}
