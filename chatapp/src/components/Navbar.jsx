@@ -3,7 +3,6 @@ import { useNavigate, useLocation } from "react-router-dom";
 
 //Element imports:
 import CreateChat from "./ChatElements/CreateChat";
-
 //Logo + Icon imports:
 import styled from "styled-components";
 import navLogo from "../assets/images/navbarLogo.png";
