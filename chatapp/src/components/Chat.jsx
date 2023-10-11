@@ -1,5 +1,9 @@
-import React, { useState, useEffect, useRef, useLayoutEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
+import settingsIcon from "../assets/images/settingsIcon.png";
+import editIcon from "../assets/images/editIcon.png";
+import addIcon from "../assets/images/addIcon.png";
+import trashIcon from "../assets/images/trashIcon.png";
 import Navbar from "./Navbar";
 import { useLocation } from "react-router-dom";
 import { auth, db } from "../firebase";
@@ -23,18 +27,12 @@ const Chat = () => {
   const roomName = location.state.name;
   const roomOwner = location.state.owner;
   const userList = location.state.userList;
-
   const scroll = useRef();
-
-  useLayoutEffect(() => {
-    if (scroll.current) {
-      scroll.current.scrollIntoView({ behavior: "smooth" });
-    }
-  }, []);
+  const [showEdit, setShowEdit] = useState(false);
 
   //GET ALL MESSAGES
   useEffect(() => {
-    console.log("USEFFECT MESSAGES RAN");
+    console.log("USEFFECT MESSAGES RAN", roomOwner);
     const chatRoomRef = doc(collection(db, "chatRooms"), roomID);
     const messagesSubcollectionRef = collection(chatRoomRef, "Messages");
 
@@ -51,11 +49,28 @@ const Chat = () => {
     return () => unsubscribe();
   }, [roomName, roomOwner, roomID, chatUser]);
 
+  // Edit chat room functionality:
+  const openEdit = () => {
+    setShowEdit(true);
+  };
+  const closeEdit = () => {
+    setShowEdit(false);
+  };
+
   return (
     <ChatWrapper>
       <Navbar />
+
       <ContentWrapper>
-        <Heading>Chat Room: {roomName}</Heading>
+        <EditWrapper>
+          <EditButton onClick={openEdit}>
+            <Icon src={settingsIcon} />
+            Edit
+          </EditButton>
+        </EditWrapper>
+        <HeaderWrapper>
+          <Heading>{roomName}</Heading>
+        </HeaderWrapper>
         <MessagesWrapper>
           {messages &&
             messages.map((message) => (
@@ -67,6 +82,37 @@ const Chat = () => {
           <SendMessage scroll={scroll} roomID={roomID} />
         </SendMessageWrapper>
       </ContentWrapper>
+      {showEdit && (
+        //THIS IS THE MENU POP UP ELEMENT, STYLED BELOW
+        <MenuModal>
+          <MenuModalContent>
+            <CloseMenu onClick={closeEdit}>x</CloseMenu>
+            <EditForm>
+              <H4>New Room Name:</H4>
+              <Section>
+                <input type="text"/>
+                <IconButton type="button">
+                  <Icon src={editIcon} />
+                </IconButton>
+              </Section>
+
+              <H4>Add User:</H4>
+              <Section>
+              <input type="text" placeholder="Search for a user to add (username)"/>
+              <IconButton type="button"><Icon src={addIcon}/></IconButton>
+              </Section>
+            <H4>Current Users:</H4>
+              <Section>
+              <div>{userList}</div>
+              </Section>
+        <br/>
+              <Section>
+             <IconButton type="button"><Icon src={trashIcon}/></IconButton>
+              </Section>
+            </EditForm>
+          </MenuModalContent>
+        </MenuModal>
+      )}
     </ChatWrapper>
   );
 };
@@ -83,9 +129,110 @@ const ContentWrapper = styled.div`
   position: absolute;
   min-width: 85vw;
 `;
+const EditWrapper = styled.div`
+  margin-top: 50px;
+  position: absolute;
+  min-width: 10%;
+  right: 10px;
+  top: 0;
+`;
+const EditButton = styled.button`
+  border: none;
+  margin: 10px;
+  font-family: Lato;
+  font-size: calc(5px + 2vmin);
+  background-color: inherit;
+  color: #e0b3b3;
+  pointer-events: auto;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+`;
+
+
+const MenuModal = styled.div`
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto;
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+`;
+
+const MenuModalContent = styled.div`
+  border: 4px solid #e0b3b3;
+  border-radius: 25px;
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  width: 25%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+`;
+
+const CloseMenu = styled.button`
+  color: #b3e0b3;
+  font-weight: bold;
+  border: none;
+  font-family: Lato;
+  font-size: calc(10px + 2vmin);
+  background-color: transparent;
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+`;
+
+const EditForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: Lato;
+  margin-top: 5%;
+  max-width: 100%;
+`;
+const Section = styled.section`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const H4 = styled.h4`
+  color: #e0b3b3;
+  text-decoration: underline;
+`
+
+const IconButton = styled.button`
+  border: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: inherit;
+  max-width: 2vw;
+  cursor: pointer;
+`;
+
+const Icon = styled.img`
+  max-height: 1.5vw;
+  margin-right: 15px;
+`;
+
+const HeaderWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 
 const Heading = styled.h1`
   font-familty: Lato;
+  color: #e0b3b3;
+  text-decoration: underline;
 `;
 
 const MessagesWrapper = styled.div`
@@ -93,6 +240,7 @@ const MessagesWrapper = styled.div`
   overflow-x: hidden;
   display: flex;
   flex-direction: column;
+  margin-top: 15px;
   max-height: 82vh;
   min-height: 82vh;
   max-width: 100%;
