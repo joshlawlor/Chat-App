@@ -48,7 +48,7 @@ This Live Chat application is a real-time chat platform that allows users to reg
 
 1. **Clone the repository:**
    ````shell
-   git clone https://github.com/your-username/live-chat-app.git
+   git clone https://github.com/joshlawlor/Chat-App.git
    ````
 2. **Install project dependencies the repository:**
    ````shell
