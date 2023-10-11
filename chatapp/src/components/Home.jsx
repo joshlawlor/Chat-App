@@ -15,9 +15,13 @@ const Home = () => {
   const auth = getAuth();
   // This is the state tracking whether or not user has clicked to view the menu
   const [showMenu, setShowMenu] = useState(false);
+  const [authState, setAuthState] = useState(false);
+  const [displayName, setDisplayName] = useState("");
   onAuthStateChanged(auth, (user) => {
     if (user) {
       console.log("User authenticated", user.displayName);
+      setAuthState(true)
+      setDisplayName(user.displayName)
     } else {
       navigate("/");
       console.log("Unauthenticated");
@@ -46,7 +50,7 @@ const Home = () => {
       <ContentWrapper>
         <Heading>Your Chat Rooms:</Heading>
         {/* IMPORTING CHATROOM ELEMENT HERE */}
-        <ChatRooms />
+        {authState ? <ChatRooms displayName={displayName} /> : <div>Loading...</div>}
       </ContentWrapper>
       {/* BELOW IS THE CHECK WHETHER OR NOT USER CLICKED THE MENU BUTTON ABOVE */}
       {showMenu && (

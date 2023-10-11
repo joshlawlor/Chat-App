@@ -5,25 +5,28 @@ import styled from "styled-components";
 
 //FIREBASE IMPORTS:
 import { db } from "../../firebase";
-import { query, collection, onSnapshot } from "firebase/firestore";
+import { query, collection, onSnapshot, where } from "firebase/firestore";
 
-const ChatRooms = () => {
+const ChatRooms = ({displayName}) => {
   const navigate = useNavigate();
   const [rooms, setRooms] = useState([]);
-
   //FIRESTORE CHAT ROOMS QUERY:
   useEffect(() => {
-    const q = query(collection(db, "chatRooms"));
-    console.log(q);
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      let chats = [];
-      querySnapshot.forEach((doc) => {
-        chats.push({ ...doc.data(), id: doc.id });
+    if (displayName) {
+      const q = query(
+        collection(db, "chatRooms"),
+        where("userList", "array-contains", displayName)
+      );
+      const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        let chats = [];
+        querySnapshot.forEach((doc) => {
+          chats.push({ ...doc.data(), id: doc.id });
+        });
+        setRooms(chats);
       });
-      setRooms(chats);
-    });
-    return () => unsubscribe();
-  }, []);
+      return () => unsubscribe();
+    }
+  }, [displayName ]);
 
   const openRoom = (room) => {
     navigate("/chat", {
