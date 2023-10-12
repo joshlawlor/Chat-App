@@ -7,7 +7,7 @@ import trashIcon from "../assets/images/trashIcon.png";
 import xIcon from "../assets/images/xIcon.png";
 import { db } from "../firebase";
 
-import { doc, collection, updateDoc } from "firebase/firestore";
+import { doc, collection, updateDoc, deleteDoc } from "firebase/firestore";
 const EditChat = ({ userList, roomOwner, roomID, roomName, displayName }) => {
   const navigate = useNavigate();
   const chatRoomRef = doc(collection(db, "chatRooms"), roomID);
@@ -61,7 +61,6 @@ const EditChat = ({ userList, roomOwner, roomID, roomName, displayName }) => {
     index
       .search(value)
       .then(({ hits }) => {
-        console.log("USER SEARCH", hits);
         setSearchResults(hits);
       })
       .catch((err) => {
@@ -74,7 +73,6 @@ const EditChat = ({ userList, roomOwner, roomID, roomName, displayName }) => {
 
   const handleAddUser = (index, value) => {
     const updatedUserList = [...displayUsers];
-    console.log(updatedUserList);
     if (!updatedUserList.includes(value)) {
       // If it doesn't exist, add it to the end of the array
       updatedUserList.push(value);
@@ -106,13 +104,23 @@ const EditChat = ({ userList, roomOwner, roomID, roomName, displayName }) => {
       await updateDoc(chatRoomRef, {
         userList: updatedList,
       });
-
       setDisplayUsers(updatedList);
-      // window.location.replace("/chat");
     } catch (error) {
       console.error("Error editing chat: ", error);
     }
   };
+
+  //DELETE CHAT ROOM:
+
+  const deleteChatRoom = async () => {
+    try {
+      await deleteDoc(chatRoomRef);
+      window.location.replace("/home");
+    } catch (error) {
+      console.error("Error deleting chat: ", error);
+    }
+  };
+
   //RELOAD PAGE WHEN CHANGES ARE MADE:
   const reloadTitle = () => {
     console.log("RELOADING TITLE");
@@ -185,7 +193,7 @@ const EditChat = ({ userList, roomOwner, roomID, roomName, displayName }) => {
         </Section>
         <br />
         <Section>
-          <IconButton type="button">
+          <IconButton type="button" onClick={deleteChatRoom}>
             <Icon src={trashIcon} />
           </IconButton>
         </Section>
