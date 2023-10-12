@@ -88,6 +88,7 @@ const EditChat = ({ userList, roomOwner, roomID, roomName, displayName }) => {
       });
       setSearchInput("");
       setSearchResults([]);
+      reloadUsers(updatedUserList)
     } catch (error) {
       console.error("Error editing chat user list: ", error);
     }
@@ -105,6 +106,7 @@ const EditChat = ({ userList, roomOwner, roomID, roomName, displayName }) => {
         userList: updatedList,
       });
       setDisplayUsers(updatedList);
+      reloadUsers(updatedList)
     } catch (error) {
       console.error("Error editing chat: ", error);
     }
@@ -130,6 +132,19 @@ const EditChat = ({ userList, roomOwner, roomID, roomName, displayName }) => {
         name: newRoomName,
         owner: roomOwner,
         userList: userList,
+        displayName: displayName,
+      },
+    });
+  };
+
+  const reloadUsers = (updatedUserList) => {
+    console.log("RELOADING USERS");
+    navigate("/chat", {
+      state: {
+        id: roomID,
+        name: roomName,
+        owner: roomOwner,
+        userList: updatedUserList,
         displayName: displayName,
       },
     });
