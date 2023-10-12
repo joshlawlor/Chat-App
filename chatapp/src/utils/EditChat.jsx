@@ -1,16 +1,43 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import editIcon from "../assets/images/editIcon.png";
 import addIcon from "../assets/images/addIcon.png";
 import trashIcon from "../assets/images/trashIcon.png";
-const EditChat = ({userList, roomOwner}) => {
+import { db } from "../firebase";
+
+import {
+  doc,
+  collection,
+  updateDoc,
+} from "firebase/firestore";
+const EditChat = ({ userList, roomOwner, roomID }) => {
+  const chatRoomRef = doc(collection(db, "chatRooms"), roomID);
+  const [newRoomName, setNewRoomName] = useState("");
+
+
+  const editRoomName = async () => {
+    try {
+      await updateDoc(chatRoomRef, {
+        name: newRoomName,
+      });
+    } catch (error) {
+      console.error("Error editing chat: ", error);
+    }
+  };
+  const handleRoomNameChange = (e) => {
+    setNewRoomName(e.target.value);
+  };
   return (
     <EditFormWrapper>
       <EditForm>
         <H4>New Room Name:</H4>
         <Section>
-          <input type="text" />
-          <IconButton type="button">
+          <input
+            type="text"
+            value={newRoomName}
+            onChange={handleRoomNameChange}
+          />
+          <IconButton type="button" onClick={editRoomName}>
             <Icon src={editIcon} />
           </IconButton>
         </Section>

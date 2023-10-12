@@ -86,7 +86,7 @@ const Chat = () => {
         <MenuModal>
           <MenuModalContent>
             <CloseMenu onClick={closeEdit}>x</CloseMenu>
-            <EditChat userList={userList} roomOwner={roomOwner}/>
+            <EditChat userList={userList} roomOwner={roomOwner} roomID={roomID}/>
           </MenuModalContent>
         </MenuModal>
       )}
