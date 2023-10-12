@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import editIcon from "../assets/images/editIcon.png";
 import addIcon from "../assets/images/addIcon.png";
@@ -6,7 +7,8 @@ import trashIcon from "../assets/images/trashIcon.png";
 import { db } from "../firebase";
 
 import { doc, collection, updateDoc } from "firebase/firestore";
-const EditChat = ({ userList, roomOwner, roomID, roomName }) => {
+const EditChat = ({ userList, roomOwner, roomID, roomName, displayName }) => {
+  const navigate = useNavigate();
   const chatRoomRef = doc(collection(db, "chatRooms"), roomID);
 
   //CHAT NAME EDIT:
@@ -16,7 +18,7 @@ const EditChat = ({ userList, roomOwner, roomID, roomName }) => {
       await updateDoc(chatRoomRef, {
         name: newRoomName,
       });
-      window.location.reload();
+      reloadTitle()
     } catch (error) {
       console.error("Error editing chat: ", error);
     }
@@ -92,6 +94,20 @@ const EditChat = ({ userList, roomOwner, roomID, roomName }) => {
     } catch (error) {
       console.error("Error editing chat user list: ", error);
     }
+  };
+
+  //RELOAD PAGE WHEN CHANGES ARE MADE:
+  const reloadTitle = () => {
+    console.log("RELOADING ROOM");
+    navigate("/chat", {
+      state: {
+        id: roomID,
+        name: newRoomName,
+        owner: roomOwner,
+        userList: userList,
+        displayName: displayName,
+      },
+    });
   };
 
   return (

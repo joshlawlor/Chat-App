@@ -28,7 +28,7 @@ const Chat = () => {
   const roomName = location.state.name;
   const roomOwner = location.state.owner;
   const userList = location.state.userList;
-  const displayName = location.state.displayName
+  const displayName = location.state.displayName;
   const scroll = useRef();
 
   //GET ALL MESSAGES
@@ -87,21 +87,21 @@ const Chat = () => {
           <SendMessage scroll={scroll} roomID={roomID} />
         </SendMessageWrapper>
       </ContentWrapper>
-      {showEdit &&
-        (
-          //THIS IS THE MENU POP UP ELEMENT, STYLED BELOW
-          <MenuModal>
-            <MenuModalContent>
-              <CloseMenu onClick={closeEdit}>x</CloseMenu>
-              <EditChat
-                userList={userList}
-                roomOwner={roomOwner}
-                roomID={roomID}
-                roomName={roomName}
-              />
-            </MenuModalContent>
-          </MenuModal>
-        )}
+      {showEdit && (
+        //THIS IS THE MENU POP UP ELEMENT, STYLED BELOW
+        <MenuModal>
+          <MenuModalContent>
+            <CloseMenu onClick={closeEdit}>x</CloseMenu>
+            <EditChat
+              userList={userList}
+              roomOwner={roomOwner}
+              roomID={roomID}
+              roomName={roomName}
+              displayName={displayName}
+            />
+          </MenuModalContent>
+        </MenuModal>
+      )}
     </ChatWrapper>
   );
 };
