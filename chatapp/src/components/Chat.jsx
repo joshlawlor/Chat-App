@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import settingsIcon from "../assets/images/settingsIcon.png";
-import editIcon from "../assets/images/editIcon.png";
-import addIcon from "../assets/images/addIcon.png";
-import trashIcon from "../assets/images/trashIcon.png";
+
 import Navbar from "./Navbar";
+import EditChat from "../utils/EditChat";
 import { useLocation } from "react-router-dom";
 import { auth, db } from "../firebase";
 import {
@@ -87,29 +86,7 @@ const Chat = () => {
         <MenuModal>
           <MenuModalContent>
             <CloseMenu onClick={closeEdit}>x</CloseMenu>
-            <EditForm>
-              <H4>New Room Name:</H4>
-              <Section>
-                <input type="text"/>
-                <IconButton type="button">
-                  <Icon src={editIcon} />
-                </IconButton>
-              </Section>
-
-              <H4>Add User:</H4>
-              <Section>
-              <input type="text" placeholder="Search for a user to add (username)"/>
-              <IconButton type="button"><Icon src={addIcon}/></IconButton>
-              </Section>
-            <H4>Current Users:</H4>
-              <Section>
-              <div>{userList}</div>
-              </Section>
-        <br/>
-              <Section>
-             <IconButton type="button"><Icon src={trashIcon}/></IconButton>
-              </Section>
-            </EditForm>
+            <EditChat userList={userList} roomOwner={roomOwner}/>
           </MenuModalContent>
         </MenuModal>
       )}
@@ -149,7 +126,6 @@ const EditButton = styled.button`
   align-items: center;
 `;
 
-
 const MenuModal = styled.div`
   position: fixed;
   z-index: 1;
@@ -185,37 +161,6 @@ const CloseMenu = styled.button`
   position: absolute;
   top: 10px;
   right: 10px;
-`;
-
-const EditForm = styled.form`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-family: Lato;
-  margin-top: 5%;
-  max-width: 100%;
-`;
-const Section = styled.section`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-`;
-
-const H4 = styled.h4`
-  color: #e0b3b3;
-  text-decoration: underline;
-`
-
-const IconButton = styled.button`
-  border: none;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: inherit;
-  max-width: 2vw;
-  cursor: pointer;
 `;
 
 const Icon = styled.img`
