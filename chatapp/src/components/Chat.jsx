@@ -52,7 +52,7 @@ const Chat = () => {
     return () => unsubscribe();
   }, [roomName, roomOwner, roomID, chatUser, displayName]);
 
-  // Edit chat room functionality:
+  // Edit chat room pop up functionality:
   const openEdit = () => {
     setShowEdit(true);
   };
