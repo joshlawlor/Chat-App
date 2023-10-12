@@ -4,6 +4,7 @@ import styled from "styled-components";
 import editIcon from "../assets/images/editIcon.png";
 import addIcon from "../assets/images/addIcon.png";
 import trashIcon from "../assets/images/trashIcon.png";
+import xIcon from "../assets/images/xIcon.png";
 import { db } from "../firebase";
 
 import { doc, collection, updateDoc } from "firebase/firestore";
@@ -18,7 +19,7 @@ const EditChat = ({ userList, roomOwner, roomID, roomName, displayName }) => {
       await updateDoc(chatRoomRef, {
         name: newRoomName,
       });
-      reloadTitle()
+      reloadTitle();
     } catch (error) {
       console.error("Error editing chat: ", error);
     }
@@ -38,7 +39,6 @@ const EditChat = ({ userList, roomOwner, roomID, roomName, displayName }) => {
   const index = client.initIndex("chat-users");
 
   const handleSearchInputChange = (e) => {
-    //**NEED TO PUT A CHECK HERE IN CASE OF BLANK SEARCH */
     const value = e.target.value;
     setSearchInput(value);
     if (searchTimeout) {
@@ -58,7 +58,6 @@ const EditChat = ({ userList, roomOwner, roomID, roomName, displayName }) => {
       setSearchInput("");
       return;
     }
-    //THIS FUNCTION SEARCHES THE ALGOLIA INDEX OF USERS COLLECTION AND RETURNS WHAT MATCHES
     index
       .search(value)
       .then(({ hits }) => {
@@ -96,9 +95,27 @@ const EditChat = ({ userList, roomOwner, roomID, roomName, displayName }) => {
     }
   };
 
+  //REMOVE USERS FROM USERLIST:
+  const removeUserFromList = (userToRemove) => {
+    const updatedList = displayUsers.filter((user) => user !== userToRemove);
+    handleUserListChange(updatedList);
+  };
+
+  const handleUserListChange = async (updatedList) => {
+    try {
+      await updateDoc(chatRoomRef, {
+        userList: updatedList,
+      });
+
+      setDisplayUsers(updatedList);
+      // window.location.replace("/chat");
+    } catch (error) {
+      console.error("Error editing chat: ", error);
+    }
+  };
   //RELOAD PAGE WHEN CHANGES ARE MADE:
   const reloadTitle = () => {
-    console.log("RELOADING ROOM");
+    console.log("RELOADING TITLE");
     navigate("/chat", {
       state: {
         id: roomID,
@@ -153,15 +170,15 @@ const EditChat = ({ userList, roomOwner, roomID, roomName, displayName }) => {
           <div>
             {displayUsers.map((user, index) =>
               user !== roomOwner ? (
-                <div key={index}>
+                <Users key={index}>
                   {user}
-                  <button
+                  <IconButton
                     type="button"
-                    // onClick={() => removeUserFromList(user)}
+                    onClick={() => removeUserFromList(user)}
                   >
-                    X
-                  </button>
-                </div>
+                    <Icon src={xIcon} />
+                  </IconButton>
+                </Users>
               ) : null
             )}
           </div>
@@ -195,6 +212,12 @@ const Section = styled.section`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+`;
+
+const Users = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const H4 = styled.h4`
