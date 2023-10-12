@@ -19,8 +19,8 @@ const Message = ({ message }) => {
 
   const MessageContainer = styled.div`
     ${messageStyles}
-    background-color: ${messageAuthor === auth.currentUser.uid ? '#f8e896' : '#a8ddfd'};
-    border: 1px solid ${messageAuthor === auth.currentUser.uid ? '#f8e896' : '#97c6e3'};
+    background-color: ${messageAuthor === auth.currentUser.uid ? '#ffc8c7' : '#c7ffcb'};
+    border: 1px solid ${messageAuthor === auth.currentUser.uid ? '#ffc8c7' : '#c7ffcb'};
 
     &:after {
       content: '';
@@ -30,7 +30,7 @@ const Message = ({ message }) => {
       top: 0;
       left: ${messageAuthor === auth.currentUser.uid ? 'auto' : '-15px'};
       right: ${messageAuthor === auth.currentUser.uid ? '-15px' : 'auto'};
-      border-top: 15px solid ${messageAuthor === auth.currentUser.uid ? '#f8e896' : '#a8ddfd'};
+      border-top: 15px solid ${messageAuthor === auth.currentUser.uid ? '#ffc8c7' : '#c7ffcb'};
       border-left: ${messageAuthor === auth.currentUser.uid ? '15px solid transparent' : 'transparent'};
       border-right: ${messageAuthor === auth.currentUser.uid ? 'transparent' : '15px solid transparent'};
     }
@@ -43,7 +43,7 @@ const Message = ({ message }) => {
       top: -1px;
       left: ${messageAuthor === auth.currentUser.uid ? 'auto' : '-17px'};
       right: ${messageAuthor === auth.currentUser.uid ? '-17px' : 'auto'};
-      border-top: 17px solid ${messageAuthor === auth.currentUser.uid ? '#dfd087' : '#97c6e3'};
+      border-top: 17px solid ${messageAuthor === auth.currentUser.uid ? '#ffc8c7' : '#97c6e3'};
       border-left: ${messageAuthor === auth.currentUser.uid ? '16px solid transparent' : 'transparent'};
       border-right: ${messageAuthor === auth.currentUser.uid ? 'transparent' : '16px solid transparent'};
     }
