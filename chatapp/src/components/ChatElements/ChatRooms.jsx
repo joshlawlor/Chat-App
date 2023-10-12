@@ -35,6 +35,7 @@ const ChatRooms = ({displayName}) => {
         name: room.name,
         owner: room.owner,
         userList: room.userList,
+        displayName: displayName,
       },
     });
   };

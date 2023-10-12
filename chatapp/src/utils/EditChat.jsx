@@ -10,9 +10,9 @@ import {
   collection,
   updateDoc,
 } from "firebase/firestore";
-const EditChat = ({ userList, roomOwner, roomID }) => {
+const EditChat = ({ userList, roomOwner, roomID, roomName }) => {
   const chatRoomRef = doc(collection(db, "chatRooms"), roomID);
-  const [newRoomName, setNewRoomName] = useState("");
+  const [newRoomName, setNewRoomName] = useState(roomName);
 
 
   const editRoomName = async () => {
@@ -30,7 +30,7 @@ const EditChat = ({ userList, roomOwner, roomID }) => {
   return (
     <EditFormWrapper>
       <EditForm>
-        <H4>New Room Name:</H4>
+        <H4>Edit Room Name:</H4>
         <Section>
           <input
             type="text"

@@ -21,20 +21,24 @@ import SendMessage from "./ChatElements/SendMessage";
 const Chat = () => {
   const [messages, setMessages] = useState([]);
   const [chatUser] = useAuthState(auth);
+  const [isOwner, setIsOwner] = useState(false);
+  const [showEdit, setShowEdit] = useState(false);
   const location = useLocation();
   const roomID = location.state.id;
   const roomName = location.state.name;
   const roomOwner = location.state.owner;
   const userList = location.state.userList;
+  const displayName = location.state.displayName
   const scroll = useRef();
-  const [showEdit, setShowEdit] = useState(false);
 
   //GET ALL MESSAGES
   useEffect(() => {
     console.log("USEFFECT MESSAGES RAN", roomOwner);
     const chatRoomRef = doc(collection(db, "chatRooms"), roomID);
     const messagesSubcollectionRef = collection(chatRoomRef, "Messages");
-
+    if (roomOwner === displayName) {
+      setIsOwner(true);
+    }
     const q = query(messagesSubcollectionRef, orderBy("timestamp"));
     console.log(q);
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
@@ -46,7 +50,7 @@ const Chat = () => {
     });
 
     return () => unsubscribe();
-  }, [roomName, roomOwner, roomID, chatUser]);
+  }, [roomName, roomOwner, roomID, chatUser, displayName]);
 
   // Edit chat room functionality:
   const openEdit = () => {
@@ -62,10 +66,12 @@ const Chat = () => {
 
       <ContentWrapper>
         <EditWrapper>
-          <EditButton onClick={openEdit}>
-            <Icon src={settingsIcon} />
-            Edit
-          </EditButton>
+          {isOwner && (
+            <EditButton onClick={openEdit}>
+              <Icon src={settingsIcon} />
+              Edit
+            </EditButton>
+          )}
         </EditWrapper>
         <HeaderWrapper>
           <Heading>{roomName}</Heading>
@@ -81,15 +87,21 @@ const Chat = () => {
           <SendMessage scroll={scroll} roomID={roomID} />
         </SendMessageWrapper>
       </ContentWrapper>
-      {showEdit && (
-        //THIS IS THE MENU POP UP ELEMENT, STYLED BELOW
-        <MenuModal>
-          <MenuModalContent>
-            <CloseMenu onClick={closeEdit}>x</CloseMenu>
-            <EditChat userList={userList} roomOwner={roomOwner} roomID={roomID}/>
-          </MenuModalContent>
-        </MenuModal>
-      )}
+      {showEdit &&
+        (
+          //THIS IS THE MENU POP UP ELEMENT, STYLED BELOW
+          <MenuModal>
+            <MenuModalContent>
+              <CloseMenu onClick={closeEdit}>x</CloseMenu>
+              <EditChat
+                userList={userList}
+                roomOwner={roomOwner}
+                roomID={roomID}
+                roomName={roomName}
+              />
+            </MenuModalContent>
+          </MenuModal>
+        )}
     </ChatWrapper>
   );
 };
