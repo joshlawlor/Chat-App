@@ -21,7 +21,8 @@ const Message = ({ message }) => {
     ${messageStyles}
     background-color: ${messageAuthor === auth.currentUser.uid ? '#ffc8c7' : '#c7ffcb'};
     border: 1px solid ${messageAuthor === auth.currentUser.uid ? '#ffc8c7' : '#c7ffcb'};
-
+    margin: 10px;
+    
     &:after {
       content: '';
       position: absolute;
@@ -49,10 +50,15 @@ const Message = ({ message }) => {
     }
   `;
 
+  const P = styled.p`
+  font-family: Lato;
+  font-size: 18px;
+  `
+
   return (
     <MessageContainer>
-      <p className="message-content">{message.name}</p>
-      <p>{message.text}</p>
+      <P  className="message-content">{message.name}</P>
+      <P className='message-text'>{message.text}</P>
     </MessageContainer>
   );
 };
