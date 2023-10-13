@@ -117,7 +117,7 @@ const EditChat = ({ userList, roomOwner, roomID, roomName, displayName }) => {
   const deleteChatRoom = async () => {
     try {
       await deleteDoc(chatRoomRef);
-      window.location.replace("/home");
+      navigate("/home");
     } catch (error) {
       console.error("Error deleting chat: ", error);
     }
