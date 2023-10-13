@@ -114,9 +114,10 @@ const ChatWrapper = styled.div`
 
 const ContentWrapper = styled.div`
   flex: 1;
-  margin-left: 15vw; /* Adjust the left margin to match the Navbar width */
+  margin-left: 15%; /* Adjust the left margin to match the Navbar width */
   position: absolute;
-  min-width: 85vw;
+  max-width: 85%;
+  min-width: 85%;
 `;
 const EditWrapper = styled.div`
   margin-top: 50px;
@@ -198,11 +199,29 @@ const MessagesWrapper = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 15px;
-  max-height: 82vh;
-  min-height: 82vh;
+  max-height: 65vh;
+  min-height: 75vh;
   max-width: 100%;
   padding: 15px;
+
+  &::-webkit-scrollbar {
+    width: 15px; /* Set the width of the scrollbar */
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: rgba(179, 224, 179, 0.2);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #e0b3b3; 
+    border-radius: 10px; 
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: #b3e0b3;
+  }
 `;
 const SendMessageWrapper = styled.div`
-  border: 3px solid blue;
+  min-height: 8vh;
+  max-height: 8vh;
 `;

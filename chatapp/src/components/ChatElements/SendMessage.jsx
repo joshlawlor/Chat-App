@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import styled from "styled-components";
+import sendIcon from "../../assets/images/sendIcon.png";
+import attachmentIcon from "../../assets/images/attachmentIcon.png";
 import { auth, db } from "../../firebase";
 import { addDoc, doc, collection, serverTimestamp } from "firebase/firestore";
 
@@ -49,11 +52,9 @@ const SendMessage = ({ scroll, roomID }) => {
   };
 
   return (
-    <div id="sendMessage-container">
-      <button type="submit" className="message-button">
-        ADD ATTACHMENT
-      </button>
-      <textarea
+    <SendMessagesWrapper>
+      
+      <TextArea
         value={input}
         id="message-content-input"
         onChange={handleInputChange}
@@ -61,11 +62,41 @@ const SendMessage = ({ scroll, roomID }) => {
         type="text"
         placeholder="Message"
       />
-      <button onClick={sendMessage} type="submit" className="message-button">
-        Send
-      </button>
-    </div>
+     
+      <IconButton src={sendIcon} onClick={sendMessage} alt="send" type="submit" className="message-button"/>
+     
+      <IconButton src={attachmentIcon} alt="attachment"/>
+    </SendMessagesWrapper>
   );
 };
 
 export default SendMessage;
+
+const SendMessagesWrapper = styled.div`
+max-height: 9vh;
+display: flex;
+align-items: center;
+justify-content: center;
+`;
+
+const IconButton = styled.img`
+  max-height: 5vh;
+  cursor: pointer;
+`;
+
+const TextArea = styled.textarea`
+  min-width: 70vw;
+  max-width: 70vw
+  min-height: 5vh;
+  max-height: 5vh;
+  border: 6px solid #b3e0b3;
+  border-radius: 25px;
+  padding: 10px;
+  font-size: 25px;
+  &:focus {
+    outline: none;
+    box-shadow: 0 10px 10px -1px #e0b3b3; /* Change the border color when the textarea is focused */
+    /* Add any other styles you want for the focused state */
+  }
+
+`
