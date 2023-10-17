@@ -1,4 +1,4 @@
-import React, { useState , useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 
 import { getAuth, onAuthStateChanged } from "firebase/auth";
@@ -51,10 +51,15 @@ const Home = () => {
           Menu
         </MenuButton>
       </MenuWrapper>
+      
       <ContentWrapper>
-        <Heading>Your Chat Rooms:</Heading>
+      <Heading>Your Chat Rooms:</Heading>
         {/* IMPORTING CHATROOM ELEMENT HERE */}
-        {authState ? <ChatRooms displayName={displayName} /> : <div>Loading...</div>}
+        {authState ? (
+          <ChatRooms displayName={displayName} />
+        ) : (
+          <div>Loading...</div>
+        )}
       </ContentWrapper>
       {/* BELOW IS THE CHECK WHETHER OR NOT USER CLICKED THE MENU BUTTON ABOVE */}
       {showMenu && (

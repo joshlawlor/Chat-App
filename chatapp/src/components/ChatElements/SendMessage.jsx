@@ -92,6 +92,7 @@ const TextArea = styled.textarea`
   border: 6px solid #b3e0b3;
   border-radius: 25px;
   padding: 10px;
+  font-family: Lato;
   font-size: 25px;
   &:focus {
     outline: none;

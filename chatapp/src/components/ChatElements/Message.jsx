@@ -57,10 +57,16 @@ const Message = ({ message }) => {
 
   return (
     <MessageContainer>
-      <P  className="message-content">{message.name}</P>
+      <OwnerName>{message.name}</OwnerName>
       <P className='message-text'>{message.text}</P>
     </MessageContainer>
   );
 };
 
 export default Message;
+
+const OwnerName = styled.p`
+  font-family: Lato;
+  font-weight: bold;
+
+`

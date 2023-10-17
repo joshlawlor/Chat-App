@@ -186,8 +186,9 @@ const RegisterButton = styled.button`
   line-height: 27px;
   letter-spacing: 0em;
   background: #e0b3b3;
+  cursor: pointer;
   &:hover {
-    background: lightgray;
+    background: #b3e0b3;
   }
 `;
 

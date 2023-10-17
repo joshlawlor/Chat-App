@@ -110,6 +110,7 @@ export default Chat;
 
 const ChatWrapper = styled.div`
   display: flex;
+  
 `;
 
 const ContentWrapper = styled.div`

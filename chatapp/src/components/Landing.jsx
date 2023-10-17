@@ -157,7 +157,8 @@ background: linear-gradient(0deg, #ffffff, #ffffff),
 background-origin: border-box;
 background-clip: content-box, border-box;
 &:hover {
-  background: lightgray;
+  background: #b3e0b3;
+}
 `;
 const LoginIcon = styled.img`
   margin: none;
@@ -177,7 +178,7 @@ const LoginButton = styled.button`
   background-origin: border-box;
   background-clip: content-box, border-box;
   &:hover {
-    background: lightgray;
+    background: #b3e0b3;
   }
 `;
 const RegisterIcon = styled.img``;
@@ -243,6 +244,6 @@ const GoogleButton = styled.button`
   background-origin: border-box;
   background-clip: content-box, border-box;
   &:hover {
-    background: lightgray;
+    background: #b3e0b3;
   }
 `;
