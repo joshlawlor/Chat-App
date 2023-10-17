@@ -24,14 +24,20 @@ const ChatRooms = ({ displayName }) => {
           chats.push({ ...doc.data(), id: doc.id });
         });
         chats.sort((chatA, chatB) => {
+          console.log(chatA.timestamp, chatB.timestamp)
           return chatB.timestamp - chatA.timestamp;
         });
-
         setRooms(chats);
       });
       return () => unsubscribe();
     }
   }, [displayName]);
+
+  const formatDate = (timestamp) => {
+    const date = new Date(timestamp.seconds * 1000);
+    const formattedDate = date.toLocaleDateString();
+    return formattedDate;
+  };
 
   const openRoom = (room) => {
     navigate("/chat", {
@@ -58,6 +64,7 @@ const ChatRooms = ({ displayName }) => {
             >
               <RoomTitle>{room.name}</RoomTitle>
               <RoomList>Owner: {room.owner}</RoomList>
+              <TimeStamp>Created:{formatDate(room.timestamp)}</TimeStamp>
             </Room>
           ))}
       </ContentWrapper>
@@ -101,7 +108,7 @@ const Room = styled.button`
   background-color: inherit;
   border: 8px solid #b3e0b3;
   border-radius: 25px;
-  box-shadow: 0 10px 10px -1px #e0b3b3;
+
   cursor: pointer;
   vertical-align: middle;
   min-width: 50vw;
@@ -116,6 +123,10 @@ const Room = styled.button`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  &:hover {
+    background-color: #e0b3b3;
+    box-shadow: 0 0 10px 10px #ffc8c7;
+  }
 `;
 
 const RoomTitle = styled.h4`
@@ -128,3 +139,5 @@ const RoomList = styled.p`
   margin: 0;
   font-size: calc(1% + 25px);
 `;
+
+const TimeStamp = styled.p``
