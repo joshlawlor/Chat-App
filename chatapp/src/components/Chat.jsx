@@ -110,6 +110,7 @@ export default Chat;
 
 const ChatWrapper = styled.div`
   display: flex;
+  
 `;
 
 const ContentWrapper = styled.div`
@@ -146,7 +147,7 @@ const MenuModal = styled.div`
   top: 0;
   width: 100%; /* Full width */
   height: 100%; /* Full height */
-  overflow: auto;
+  overflow: hidden; /* Full height */
   background-color: rgb(0, 0, 0); /* Fallback color */
   background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
 `;
