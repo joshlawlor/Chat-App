@@ -97,10 +97,10 @@ const Landing = () => {
         </RegisterButton>
       </ButtonsWrapper>
       <GoogleWrapper>
-        <GoogleButton>
+        <GoogleButton onClick={googleAuth}>
           <GoogleIcon src={googleIcon} alt="googleIcon" />
           <div>
-            <GoogleTitle onClick={googleAuth}>Sign in with Google.</GoogleTitle>
+            <GoogleTitle >Sign in with Google.</GoogleTitle>
           </div>
         </GoogleButton>
       </GoogleWrapper>
