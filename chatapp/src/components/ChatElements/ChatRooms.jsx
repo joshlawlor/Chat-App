@@ -34,9 +34,12 @@ const ChatRooms = ({ displayName }) => {
   }, [displayName]);
 
   const formatDate = (timestamp) => {
-    const date = new Date(timestamp.seconds * 1000);
-    const formattedDate = date.toLocaleDateString();
-    return formattedDate;
+    if (timestamp && timestamp.seconds) {
+      const date = new Date(timestamp.seconds * 1000);
+      const formattedDate = date.toLocaleDateString();
+      return formattedDate;
+    }
+    return "Unknown Date"; 
   };
 
   const openRoom = (room) => {
@@ -124,7 +127,8 @@ const Room = styled.button`
   align-items: center;
   justify-content: center;
   &:hover {
-    background-color: #e0b3b3;
+    background-color: rgba(224, 179, 179, 0.1);
+    font-weight: bold;
     box-shadow: 0 0 10px 10px #ffc8c7;
   }
 `;
