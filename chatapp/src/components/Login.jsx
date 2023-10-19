@@ -4,16 +4,7 @@ import { useNavigate } from "react-router";
 import { auth } from "../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { db } from "../firebase";
-import {
-  collection,
-  doc,
-  setDoc,
-  updateDoc,
-  getDoc,
-  query,
-  where,
-  getDocs,
-} from "firebase/firestore";
+import { collection, query, where, getDocs } from "firebase/firestore";
 import styled from "styled-components";
 import loginIcon from "../assets/images/loginIcon.png";
 const Login = () => {
@@ -42,11 +33,13 @@ const Login = () => {
     if (!emailQuerySnapshot.empty) {
       // Email already exists
       let userDocRef = null;
-      console.log("Email already exists under google signin");
+      console.log("Email already exists under google signin", userDocRef);
       await emailQuerySnapshot.forEach((doc) => {
         userDocRef = doc;
         console.log("User doc: " + doc);
-        setErrorMessage("Email already exists under google account. Please use google sign-in");
+        setErrorMessage(
+          "Email already exists under google account. Please use google sign-in"
+        );
         return;
       });
     } else {
