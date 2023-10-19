@@ -10,6 +10,8 @@ import {
   serverTimestamp,
   doc,
   setDoc,
+  updateDoc,
+  getDoc,
   query,
   where,
   getDocs,
@@ -53,7 +55,13 @@ const Landing = () => {
 
       if (!emailQuerySnapshot.empty) {
         // Email already exists
-        console.log("Email already exists.");
+        let userDocRef = null;
+        console.log("Email already exists. Updating provider", emailQuerySnapshot);
+        await emailQuerySnapshot.forEach((doc) => {
+          userDocRef = doc.ref;
+        })
+        // const updateUserRef = doc(collection(db, "chat-users"), where("email", "==", email));
+        updateDoc(userDocRef, {provider: "google", username: username})
       }
 
       if (usernameQuerySnapshot.empty && emailQuerySnapshot.empty) {
@@ -62,6 +70,7 @@ const Landing = () => {
         await setDoc(userDocRef, {
           username: username,
           email: email,
+          provider: "google",
           timestamp: serverTimestamp(),
         });
         console.log("User document created.");
