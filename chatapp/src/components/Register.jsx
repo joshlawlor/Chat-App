@@ -45,7 +45,7 @@ const Login = () => {
     // Check for duplicate username
     const duplicateUsernameQuery = query(
       userCollectionRef,
-      where("username", "==", username)
+      where("username", "==", username, "&&", "provider", "==", "email")
     );
     const usernameQuerySnapshot = await getDocs(duplicateUsernameQuery);
 
@@ -63,6 +63,7 @@ const Login = () => {
 
     if (!emailQuerySnapshot.empty) {
       setErrorMessage("Email is already registered.");
+      console.log(emailQuerySnapshot)
       return;
     }
 
@@ -88,6 +89,7 @@ const Login = () => {
         await setDoc(userDocRef, {
           username: username,
           email: email,
+          provider: "email",
           timestamp: serverTimestamp(),
         });
         console.log("User document created.");

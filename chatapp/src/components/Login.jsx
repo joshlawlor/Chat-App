@@ -3,7 +3,17 @@ import { useNavigate } from "react-router";
 
 import { auth } from "../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
-
+import { db } from "../firebase";
+import {
+  collection,
+  doc,
+  setDoc,
+  updateDoc,
+  getDoc,
+  query,
+  where,
+  getDocs,
+} from "firebase/firestore";
 import styled from "styled-components";
 import loginIcon from "../assets/images/loginIcon.png";
 const Login = () => {
@@ -11,24 +21,45 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState(null);
+  const userCollectionRef = collection(db, "chat-users");
 
   const loginUser = async (e) => {
     e.preventDefault();
+
     if (email.trim() === "" || password.trim() === "") {
       setErrorMessage("Both email and password fields are required!");
       return;
     }
     setErrorMessage(null);
 
-    await signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        console.log(userCredential);
-        navigate('/home')
-      })
-      .catch((error) => {
-        setErrorMessage(error.message);
-        console.log(errorMessage);
+    const duplicateEmailQuery = query(
+      userCollectionRef,
+      where("email", "==", email),
+      where("provider", "==", "google")
+    );
+    const emailQuerySnapshot = await getDocs(duplicateEmailQuery);
+
+    if (!emailQuerySnapshot.empty) {
+      // Email already exists
+      let userDocRef = null;
+      console.log("Email already exists under google signin");
+      await emailQuerySnapshot.forEach((doc) => {
+        userDocRef = doc;
+        console.log("User doc: " + doc);
+        setErrorMessage("Email already exists under google account. Please use google sign-in");
+        return;
       });
+    } else {
+      await signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          console.log(userCredential);
+          navigate("/home");
+        })
+        .catch((error) => {
+          setErrorMessage(error.message);
+          console.log(errorMessage);
+        });
+    }
   };
 
   let handleEmailChange = async (e) => {
@@ -66,7 +97,7 @@ const Login = () => {
       <ForgotPasswordLink onClick={() => navigate("/forgot-password")}>
         Forgot Password?
       </ForgotPasswordLink>
-      <BackButton onClick={() => navigate('/')}>Back</BackButton>
+      <BackButton onClick={() => navigate("/")}>Back</BackButton>
     </LoginPage>
   );
 };
