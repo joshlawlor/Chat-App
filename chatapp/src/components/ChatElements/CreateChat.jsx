@@ -113,35 +113,37 @@ const CreateChat = () => {
     <CreateChatWrapper>
       <ContentWrapper>
         <CreateForm onSubmit={createChat}>
-          <input
+          <h2>New Chat:</h2>
+          <Input
             value={input}
             onChange={(e) => setInput(e.target.value)}
             type="text"
             placeholder="Chat Name"
           />
-          <input
+          <h3>Add Users:</h3>
+          <Input
             value={searchInput}
             onChange={(e) => handleSearchInputChange(e)}
             type="text"
             placeholder="Search for user (username)"
           />
-          <div>
+          <SearchResults>
             {searchResults.map((result, index) => (
-              <button
+              <UserButton
                 type="button"
                 key={result.objectID}
                 onClick={() => handleUserChange(index, result.username)}
               >
                 {result.username}
-              </button>
+              </UserButton>
             ))}
-          </div>
-          <div>
+          </SearchResults>
+          <CurrentUsers>
             <strong>Current User List:</strong>
             {userList.map((user, index) => (
               <p key={index}>{user}</p>
             ))}
-          </div>
+          </CurrentUsers>
           <button type="button" onClick={() => cancelChatCreation()}>
             Cancel
           </button>
@@ -156,9 +158,47 @@ export default CreateChat;
 
 const CreateChatWrapper = styled.div``;
 
-const ContentWrapper = styled.div``;
-
-const CreateForm = styled.form`
-display: flex
-flex-direction: column;
+const ContentWrapper = styled.div`
+  color: #e0b3b3;
 `;
+
+const CreateForm = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+
+const Input = styled.input`
+color: #e0b3b3
+border: none;
+border:solid 3px #e0b3b3;
+border-radius: 25px; 
+`;
+
+
+const SearchResults = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 10px;
+`;
+
+const UserButton = styled.button`
+  border: none;
+  border: solid 3px #b3e0b3;
+  border-radius: 25px;
+  margin: 4px;
+  cursor: pointer;
+  font-family: Lato;
+  font-size: 15px;
+  font-weight: bold;
+  &:hover {
+    background-color: rgba(224, 179, 179, 0.1);
+    font-weight: bold;
+    box-shadow: 0 0 5px 5px #b3e0b3;
+  }
+`;
+
+
+const CurrentUsers = styled.div``;
