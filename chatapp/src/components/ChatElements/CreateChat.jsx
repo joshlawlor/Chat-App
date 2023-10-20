@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import xIcon from "../../assets/images/xIcon.png";
+import sendIcon from "../../assets/images/sendIcon.png";
 
 import { auth, db } from "../../firebase";
 import {
@@ -138,16 +140,20 @@ const CreateChat = () => {
               </UserButton>
             ))}
           </SearchResults>
+          <strong>Current User List:</strong>
           <CurrentUsers>
-            <strong>Current User List:</strong>
             {userList.map((user, index) => (
-              <p key={index}>{user}</p>
+              <UserButton key={index}>{user}</UserButton>
             ))}
           </CurrentUsers>
-          <button type="button" onClick={() => cancelChatCreation()}>
+
+          <CreateButton type="submit">
+            Create a New Chat <Icon src={sendIcon} />
+          </CreateButton>
+          <CancelButton type="button" onClick={() => cancelChatCreation()}>
             Cancel
-          </button>
-          <button type="submit">Create a New Chat</button>
+            <Icon src={xIcon} />
+          </CancelButton>
         </CreateForm>
       </ContentWrapper>
     </CreateChatWrapper>
@@ -162,7 +168,7 @@ const ContentWrapper = styled.div`
   color: #e0b3b3;
 `;
 
-const CreateForm = styled.div`
+const CreateForm = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -176,7 +182,6 @@ border:solid 3px #e0b3b3;
 border-radius: 25px; 
 `;
 
-
 const SearchResults = styled.div`
   display: flex;
   flex-direction: column;
@@ -184,14 +189,12 @@ const SearchResults = styled.div`
   margin: 10px;
   overflow-y: auto;
   overflow-x: hidden;
-  
+
   margin-top: 15px;
   max-height: 10vh;
-  min-height: 5vh;
   max-width: 100%;
   min-width: 50%;
 
-  
   &::-webkit-scrollbar {
     width: 15px; /* Set the width of the scrollbar */
   }
@@ -226,5 +229,67 @@ const UserButton = styled.button`
   }
 `;
 
+const CurrentUsers = styled.div`
+display: flex;
+flex-direction: column;
+align-items: center;
+overflow-y: auto;
+overflow-x: hidden;
+max-height: 20vh;
+max-width: 100%;
+min-width: 50%;
+margin-bottom: 20px;
 
-const CurrentUsers = styled.div``;
+&::-webkit-scrollbar {
+  width: 15px; /* Set the width of the scrollbar */
+}
+
+&::-webkit-scrollbar-track {
+  background-color: rgba(179, 224, 179, 0.2);
+}
+
+&::-webkit-scrollbar-thumb {
+  background-color: #e0b3b3;
+  border-radius: 10px;
+}
+
+&::-webkit-scrollbar-thumb:hover {
+  background-color: #b3e0b3;
+`;
+
+const CreateButton = styled.button`
+  font-family: Lato;
+  border: 3px solid #b3e0b3;
+  border-radius: 25px;
+  font-size: larger;
+  background-color: inherit;
+  color: #b3e0b3;
+  margin-bottom: 15px;
+  cursor: pointer;
+  &:hover {
+    background-color: rgba(224, 179, 179, 0.1);
+    font-weight: bold;
+    box-shadow: 0 0 5px 5px #b3e0b3;
+  }
+`;
+
+const CancelButton = styled.button`
+  border: 3px solid #e0b3b3;
+  border-radius: 25px;
+  font-family: Lato;
+  font-size: large;
+  background-color: inherit;
+  font-family: Lato;
+  color: #e0b3b3;
+  cursor: pointer;
+  &:hover {
+    background-color: rgba(224, 179, 179, 0.1);
+    font-weight: bold;
+    box-shadow: 0 0 5px 5px #e0b3b3;
+  }
+`;
+
+const Icon = styled.img`
+  padding-left: 10px;
+  max-height: 1.5vh;
+`;
