@@ -182,6 +182,32 @@ const SearchResults = styled.div`
   flex-direction: column;
   align-items: center;
   margin: 10px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  
+  margin-top: 15px;
+  max-height: 10vh;
+  min-height: 5vh;
+  max-width: 100%;
+  min-width: 50%;
+
+  
+  &::-webkit-scrollbar {
+    width: 15px; /* Set the width of the scrollbar */
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: rgba(179, 224, 179, 0.2);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #e0b3b3;
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: #b3e0b3;
+  }
 `;
 
 const UserButton = styled.button`
