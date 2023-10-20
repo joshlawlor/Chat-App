@@ -78,10 +78,6 @@ const CreateChat = () => {
   //CREATE CHAT FUNCTION:
   const createChat = async (e) => {
     e.preventDefault();
-    if (input === "") {
-      alert("Please enter a valid chat name");
-      return;
-    }
     //Updates userList to include the owner of the chat
     if (!userList.includes(displayName)) {
       console.log(displayName + " changed");
@@ -103,11 +99,13 @@ const CreateChat = () => {
     });
     setInput("");
     setUserList([""]);
+    setSearchResults([]);
   };
 
   const cancelChatCreation = () => {
     setInput("");
     setUserList([""]);
+    setSearchResults([]);
     return;
   };
 
@@ -115,20 +113,27 @@ const CreateChat = () => {
     <CreateChatWrapper>
       <ContentWrapper>
         <CreateForm onSubmit={createChat}>
-          <h2>New Chat:</h2>
-          <Input
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            type="text"
-            placeholder="Chat Name"
-          />
-          <h3>Add Users:</h3>
-          <Input
-            value={searchInput}
-            onChange={(e) => handleSearchInputChange(e)}
-            type="text"
-            placeholder="Search for user (username)"
-          />
+          <InputBox>
+            <h2>New Chat:</h2>
+            <Input
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              required
+              type="text"
+              placeholder="Chat Name"
+            />
+          </InputBox>
+
+          <InputBox>
+            <h3>Add Users:</h3>
+            <Input
+              value={searchInput}
+              onChange={(e) => handleSearchInputChange(e)}
+              type="text"
+              placeholder="Search for user (username)"
+            />
+          </InputBox>
+
           <SearchResults>
             {searchResults.map((result, index) => (
               <UserButton
@@ -140,20 +145,24 @@ const CreateChat = () => {
               </UserButton>
             ))}
           </SearchResults>
-          <strong>Current User List:</strong>
+          <h3>Current User List:</h3>
           <CurrentUsers>
-            {userList.map((user, index) => (
-              <UserButton key={index}>{user}</UserButton>
-            ))}
+            {userList
+              .filter((user) => user)
+              .map((user, index) => (
+                <UserDisplay key={index}>{user}</UserDisplay>
+              ))}
           </CurrentUsers>
 
-          <CreateButton type="submit">
-            Create a New Chat <Icon src={sendIcon} />
-          </CreateButton>
-          <CancelButton type="button" onClick={() => cancelChatCreation()}>
-            Cancel
-            <Icon src={xIcon} />
-          </CancelButton>
+          <SubmitBox>
+            <CancelButton type="button" onClick={() => cancelChatCreation()}>
+              Cancel
+              <Icon src={xIcon} />
+            </CancelButton>
+            <CreateButton type="submit">
+              Create Chat <Icon src={sendIcon} />
+            </CreateButton>
+          </SubmitBox>
         </CreateForm>
       </ContentWrapper>
     </CreateChatWrapper>
@@ -175,11 +184,27 @@ const CreateForm = styled.form`
   justify-content: center;
 `;
 
+const InputBox = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin: -5px;
+`;
+
 const Input = styled.input`
 color: #e0b3b3
 border: none;
 border:solid 3px #e0b3b3;
 border-radius: 25px; 
+margin-top: 5px;
+margin-left: 10px;
+min-height: 2vh;
+padding: 5px;
+&::placeholder {
+  font-family: Lato;
+  color: #e0b3b3
+}
 `;
 
 const SearchResults = styled.div`
@@ -189,7 +214,6 @@ const SearchResults = styled.div`
   margin: 10px;
   overflow-y: auto;
   overflow-x: hidden;
-
   margin-top: 15px;
   max-height: 10vh;
   max-width: 100%;
@@ -257,6 +281,21 @@ margin-bottom: 20px;
   background-color: #b3e0b3;
 `;
 
+const UserDisplay = styled.button`
+  border: none;
+  background-color: inherit;
+  font-size: large;
+  font-weight: bold;
+  font-family: Lato;
+  color: #b3e0b3;
+`;
+
+const SubmitBox = styled.div`
+  min-width: 30vw;
+  display: flex;
+  justify-content: space-between;
+`;
+
 const CreateButton = styled.button`
   font-family: Lato;
   border: 3px solid #b3e0b3;
@@ -264,7 +303,6 @@ const CreateButton = styled.button`
   font-size: larger;
   background-color: inherit;
   color: #b3e0b3;
-  margin-bottom: 15px;
   cursor: pointer;
   &:hover {
     background-color: rgba(224, 179, 179, 0.1);
@@ -277,7 +315,7 @@ const CancelButton = styled.button`
   border: 3px solid #e0b3b3;
   border-radius: 25px;
   font-family: Lato;
-  font-size: large;
+  font-size: larger;
   background-color: inherit;
   font-family: Lato;
   color: #e0b3b3;
@@ -290,6 +328,6 @@ const CancelButton = styled.button`
 `;
 
 const Icon = styled.img`
-  padding-left: 10px;
+  padding-left: 2px;
   max-height: 1.5vh;
 `;

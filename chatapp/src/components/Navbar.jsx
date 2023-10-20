@@ -141,7 +141,7 @@ const MenuModalContent = styled.div`
   background-color: #fefefe;
   margin: 15% auto;
   padding: 20px;
-  width: 25%;
+  max-width: 35%;
   position: relative;
   display: flex;
   flex-direction: column;
