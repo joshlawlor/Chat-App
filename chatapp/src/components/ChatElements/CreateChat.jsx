@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import xIcon from "../../assets/images/xIcon.png";
+import sendIcon from "../../assets/images/sendIcon.png";
 
 import { auth, db } from "../../firebase";
 import {
@@ -76,10 +78,6 @@ const CreateChat = () => {
   //CREATE CHAT FUNCTION:
   const createChat = async (e) => {
     e.preventDefault();
-    if (input === "") {
-      alert("Please enter a valid chat name");
-      return;
-    }
     //Updates userList to include the owner of the chat
     if (!userList.includes(displayName)) {
       console.log(displayName + " changed");
@@ -101,11 +99,13 @@ const CreateChat = () => {
     });
     setInput("");
     setUserList([""]);
+    setSearchResults([]);
   };
 
   const cancelChatCreation = () => {
     setInput("");
     setUserList([""]);
+    setSearchResults([]);
     return;
   };
 
@@ -113,39 +113,56 @@ const CreateChat = () => {
     <CreateChatWrapper>
       <ContentWrapper>
         <CreateForm onSubmit={createChat}>
-          <input
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            type="text"
-            placeholder="Chat Name"
-          />
-          <input
-            value={searchInput}
-            onChange={(e) => handleSearchInputChange(e)}
-            type="text"
-            placeholder="Search for user (username)"
-          />
-          <div>
+          <InputBox>
+            <h2>New Chat:</h2>
+            <Input
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              required
+              type="text"
+              placeholder="Chat Name"
+            />
+          </InputBox>
+
+          <InputBox>
+            <h3>Add Users:</h3>
+            <Input
+              value={searchInput}
+              onChange={(e) => handleSearchInputChange(e)}
+              type="text"
+              placeholder="Search for user (username)"
+            />
+          </InputBox>
+
+          <SearchResults>
             {searchResults.map((result, index) => (
-              <button
+              <UserButton
                 type="button"
                 key={result.objectID}
                 onClick={() => handleUserChange(index, result.username)}
               >
                 {result.username}
-              </button>
+              </UserButton>
             ))}
-          </div>
-          <div>
-            <strong>Current User List:</strong>
-            {userList.map((user, index) => (
-              <p key={index}>{user}</p>
-            ))}
-          </div>
-          <button type="button" onClick={() => cancelChatCreation()}>
-            Cancel
-          </button>
-          <button type="submit">Create a New Chat</button>
+          </SearchResults>
+          <h3>Current User List:</h3>
+          <CurrentUsers>
+            {userList
+              .filter((user) => user)
+              .map((user, index) => (
+                <UserDisplay key={index}>{user}</UserDisplay>
+              ))}
+          </CurrentUsers>
+
+          <SubmitBox>
+            <CancelButton type="button" onClick={() => cancelChatCreation()}>
+              Cancel
+              <Icon src={xIcon} />
+            </CancelButton>
+            <CreateButton type="submit">
+              Create Chat <Icon src={sendIcon} />
+            </CreateButton>
+          </SubmitBox>
         </CreateForm>
       </ContentWrapper>
     </CreateChatWrapper>
@@ -156,9 +173,161 @@ export default CreateChat;
 
 const CreateChatWrapper = styled.div``;
 
-const ContentWrapper = styled.div``;
+const ContentWrapper = styled.div`
+  color: #e0b3b3;
+`;
 
 const CreateForm = styled.form`
-display: flex
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+
+const InputBox = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin: -5px;
+`;
+
+const Input = styled.input`
+color: #e0b3b3
+border: none;
+border:solid 3px #e0b3b3;
+border-radius: 25px; 
+margin-top: 5px;
+margin-left: 10px;
+min-height: 2vh;
+padding: 5px;
+&::placeholder {
+  font-family: Lato;
+  color: #e0b3b3
+}
+`;
+
+const SearchResults = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 10px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  margin-top: 15px;
+  max-height: 10vh;
+  max-width: 100%;
+  min-width: 50%;
+
+  &::-webkit-scrollbar {
+    width: 15px; /* Set the width of the scrollbar */
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: rgba(179, 224, 179, 0.2);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #e0b3b3;
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: #b3e0b3;
+  }
+`;
+
+const UserButton = styled.button`
+  border: none;
+  border: solid 3px #b3e0b3;
+  border-radius: 25px;
+  margin: 4px;
+  cursor: pointer;
+  font-family: Lato;
+  font-size: 15px;
+  font-weight: bold;
+  &:hover {
+    background-color: rgba(224, 179, 179, 0.1);
+    font-weight: bold;
+    box-shadow: 0 0 5px 5px #b3e0b3;
+  }
+`;
+
+const CurrentUsers = styled.div`
+display: flex;
 flex-direction: column;
+align-items: center;
+overflow-y: auto;
+overflow-x: hidden;
+max-height: 20vh;
+max-width: 100%;
+min-width: 50%;
+margin-bottom: 20px;
+
+&::-webkit-scrollbar {
+  width: 15px; /* Set the width of the scrollbar */
+}
+
+&::-webkit-scrollbar-track {
+  background-color: rgba(179, 224, 179, 0.2);
+}
+
+&::-webkit-scrollbar-thumb {
+  background-color: #e0b3b3;
+  border-radius: 10px;
+}
+
+&::-webkit-scrollbar-thumb:hover {
+  background-color: #b3e0b3;
+`;
+
+const UserDisplay = styled.button`
+  border: none;
+  background-color: inherit;
+  font-size: large;
+  font-weight: bold;
+  font-family: Lato;
+  color: #b3e0b3;
+`;
+
+const SubmitBox = styled.div`
+  min-width: 30vw;
+  display: flex;
+  justify-content: space-between;
+`;
+
+const CreateButton = styled.button`
+  font-family: Lato;
+  border: 3px solid #b3e0b3;
+  border-radius: 25px;
+  font-size: larger;
+  background-color: inherit;
+  color: #b3e0b3;
+  cursor: pointer;
+  &:hover {
+    background-color: rgba(224, 179, 179, 0.1);
+    font-weight: bold;
+    box-shadow: 0 0 5px 5px #b3e0b3;
+  }
+`;
+
+const CancelButton = styled.button`
+  border: 3px solid #e0b3b3;
+  border-radius: 25px;
+  font-family: Lato;
+  font-size: larger;
+  background-color: inherit;
+  font-family: Lato;
+  color: #e0b3b3;
+  cursor: pointer;
+  &:hover {
+    background-color: rgba(224, 179, 179, 0.1);
+    font-weight: bold;
+    box-shadow: 0 0 5px 5px #e0b3b3;
+  }
+`;
+
+const Icon = styled.img`
+  padding-left: 2px;
+  max-height: 1.5vh;
 `;

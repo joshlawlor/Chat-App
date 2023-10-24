@@ -130,7 +130,7 @@ const MenuModal = styled.div`
   top: 0;
   width: 100%; /* Full width */
   height: 100%; /* Full height */
-  overflow: auto;
+  overflow: hidden; 
   background-color: rgb(0, 0, 0); /* Fallback color */
   background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
 `;
@@ -141,7 +141,7 @@ const MenuModalContent = styled.div`
   background-color: #fefefe;
   margin: 15% auto;
   padding: 20px;
-  width: 25%;
+  max-width: 35%;
   position: relative;
   display: flex;
   flex-direction: column;
