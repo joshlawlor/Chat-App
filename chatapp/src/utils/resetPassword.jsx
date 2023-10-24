@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { getAuth, updatePassword } from "@firebase/auth";
-
 import styled from "styled-components";
 const ResetPassword = () => {
   const [newPassword, setNewPassword] = useState("");
@@ -53,3 +52,4 @@ const ContentWrapper = styled.div`
   flex-direction: column;
   align-items: center;
 `;
+

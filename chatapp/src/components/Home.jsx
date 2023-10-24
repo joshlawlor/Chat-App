@@ -4,6 +4,7 @@ import { useNavigate } from "react-router";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import styled from "styled-components";
 import menuIcon from "../assets/images/menuIcon.png";
+import logoutIcon from "../assets/images/logoutIcon.png";
 
 import Navbar from "./Navbar";
 import ResetPassword from "../utils/resetPassword";
@@ -51,9 +52,9 @@ const Home = () => {
           Menu
         </MenuButton>
       </MenuWrapper>
-      
+
       <ContentWrapper>
-      <Heading>Your Chat Rooms:</Heading>
+        <Heading>Your Chat Rooms:</Heading>
         {/* IMPORTING CHATROOM ELEMENT HERE */}
         {authState ? (
           <ChatRooms displayName={displayName} />
@@ -69,7 +70,10 @@ const Home = () => {
             <CloseMenu onClick={closeMenu}>x</CloseMenu>
             {/* HERE I AM IMPORTING THE RESET PASSWORD COMPONENT FOR LESS MESS */}
             <ResetPassword />
-            <LogoutButton onClick={logoutHandler}>Logout</LogoutButton>
+            <LogoutButton onClick={logoutHandler}>
+              Logout
+              <LogoutIcon src={logoutIcon} />
+            </LogoutButton>
           </MenuModalContent>
         </MenuModal>
       )}
@@ -146,6 +150,25 @@ const MenuModalContent = styled.div`
 
 const LogoutButton = styled.button`
   margin-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Lato;
+  border: none;
+  border-radius: 25px;
+  font-size: larger;
+  background-color: inherit;
+  color: #b3e0b3;
+  cursor: pointer;
+  &:hover {
+    background-color: rgba(224, 179, 179, 0.1);
+    font-weight: bold;
+    box-shadow: 0 0 5px 5px #b3e0b3;
+  }
+`;
+const LogoutIcon = styled.img`
+  max-height: 1vw;
+  margin-left: 15px;
 `;
 
 const CloseMenu = styled.button`
